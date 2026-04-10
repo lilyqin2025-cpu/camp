@@ -19,7 +19,489 @@ h2{font-size:15px;font-weight:600}
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canadian Summer Camps 2026</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f5f7fa;color:#222;font-size:14px}
+.app{max-width:1100px;margin:0 auto;padding:16px}
+.header{background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:12px;border:0.5px solid #e0e0e0}
+.header-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+h1{font-size:19px;font-weight:600;color:#1a1a2e}
+.subtitle{font-size:12px;color:#888;margin-top:2px}
+.tabs{display:flex;gap:5px;flex-wrap:wrap}
+.tab{padding:6px 13px;border-radius:20px;border:0.5px solid #ccc;background:#fff;cursor:pointer;font-size:12px;color:#555;transition:all .15s}
+.tab.active{background:#1a5c96;color:#fff;border-color:#1a5c96}
+.scope-bar{display:flex;gap:6px;flex-wrap:wrap}
+.scope-btn{padding:5px 12px;border-radius:16px;border:0.5px solid #ccc;background:#fff;cursor:pointer;font-size:12px;color:#555}
+.scope-btn.active{background:#e8f4ff;color:#1a5c96;border-color:#1a5c96;font-weight:500}
+.filters{background:#fff;border-radius:10px;padding:12px 16px;margin-bottom:10px;border:0.5px solid #e0e0e0;display:flex;flex-direction:column;gap:8px}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filters label{font-size:12px;color:#666;font-weight:500}
+.filters select,.filters input[type=number]{border:0.5px solid #ccc;border-radius:6px;padding:5px 8px;font-size:12px;color:#333;background:#fff}
+.filters input[type=text]{border:0.5px solid #ccc;border-radius:6px;padding:6px 10px;font-size:13px;flex:1;min-width:200px}
+.badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:500}
+.badge-open{background:#e6f4ea;color:#1e7b34}
+.badge-full{background:#fdecea;color:#c0392b}
+.badge-soon{background:#fff3cd;color:#856404}
+.badge-closed{background:#f1f1f1;color:#666}
+.scope-tag-local{background:#e8f4ff;color:#1a5c96;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:500}
+.scope-tag-provincial{background:#f0faf4;color:#1a7a4a;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:500}
+.scope-tag-national{background:#fdf6ec;color:#8a5c00;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
+.card{background:#fff;border-radius:10px;border:0.5px solid #e0e0e0;padding:13px;cursor:pointer;transition:box-shadow .15s}
+.card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;gap:6px}
+.card-title{font-size:13px;font-weight:600;color:#1a1a2e;line-height:1.3}
+.card-org{font-size:11px;color:#666;margin-bottom:6px}
+.card-meta{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:7px}
+.tag{background:#eef2fb;color:#1a5c96;border-radius:4px;padding:2px 6px;font-size:11px}
+.tag-age{background:#f0faf4;color:#1a7a4a}
+.tag-price{background:#fdf6ec;color:#7a5c1a}
+.tag-overnight{background:#f5eeff;color:#6a2fa0}
+.card-activities{font-size:11px;color:#555;line-height:1.5}
+.card-reg{font-size:11px;color:#888;margin-top:7px;padding-top:7px;border-top:0.5px solid #f0f0f0}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:14px;padding:22px;max-width:540px;width:100%;max-height:88vh;overflow-y:auto;position:relative}
+.modal-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#666}
+.modal h2{font-size:17px;margin-bottom:3px;padding-right:24px}
+.modal-org{color:#666;font-size:12px;margin-bottom:12px}
+.detail-row{display:flex;margin-bottom:7px;font-size:12px}
+.detail-label{width:95px;color:#888;flex-shrink:0;font-weight:500}
+.detail-val{color:#333}
+.section-title{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 5px}
+.pill-list{display:flex;flex-wrap:wrap;gap:4px}
+.pill{background:#eef2fb;color:#1a5c96;border-radius:12px;padding:3px 9px;font-size:11px}
+.reminder-btn{background:#1a5c96;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:12px;cursor:pointer;margin-top:12px;width:100%}
+.reminder-btn:hover{background:#154f83}
+.calendar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.cal-card{background:#fff;border-radius:10px;border:0.5px solid #e0e0e0;padding:13px}
+.cal-month{font-size:13px;font-weight:600;color:#1a5c96;margin-bottom:9px}
+.cal-item{display:flex;gap:7px;align-items:flex-start;margin-bottom:7px;font-size:11px}
+.cal-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.cal-dot-open{background:#2ecc71}.cal-dot-soon{background:#f39c12}.cal-dot-full{background:#e74c3c}
+.map-box{background:#e8f0fe;border-radius:10px;padding:18px;border:0.5px solid #c5d8f5}
+.map-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:7px;margin-top:10px}
+.map-item{background:#fff;border-radius:8px;padding:9px 11px;border:0.5px solid #dce8f5}
+.map-item-name{font-size:12px;font-weight:600;color:#1a1a2e}
+.map-item-addr{font-size:11px;color:#666;margin-top:1px}
+.map-item-camps{font-size:11px;color:#1a5c96;margin-top:3px}
+.empty{text-align:center;padding:36px;color:#888}
+.count{font-size:12px;color:#666;margin-bottom:8px}
+.reminder-list-wrap{display:flex;flex-direction:column;gap:6px}
+.rem-item{background:#f8faff;border-radius:8px;padding:9px 12px;border:0.5px solid #d8e4f5;font-size:12px}
+.rem-item-name{font-weight:600;color:#1a1a2e}
+.rem-remove{float:right;background:none;border:none;cursor:pointer;color:#c0392b;font-size:13px}
+.section-divider{font-size:12px;font-weight:600;color:#888;margin:14px 0 6px;padding-bottom:4px;border-bottom:0.5px solid #e8e8e8}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>🏕️ Canadian Summer Camps</h1>
+      <div class="subtitle">Waterloo Region · Ontario · Canada-wide — all ages, updated yearly</div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('camps')">Camps</button>
+      <button class="tab" onclick="showTab('calendar')">Registration Dates</button>
+      <button class="tab" onclick="showTab('map')">Locations</button>
+      <button class="tab" onclick="showTab('reminders')">My Reminders <span id="rem-count"></span></button>
+    </div>
+  </div>
+  <div class="scope-bar">
+    <button class="scope-btn active" onclick="setScope('all',this)">All camps</button>
+    <button class="scope-btn" onclick="setScope('local',this)">📍 Waterloo Region</button>
+    <button class="scope-btn" onclick="setScope('provincial',this)">🏛️ Ontario-wide</button>
+    <button class="scope-btn" onclick="setScope('national',this)">🍁 Canada-wide</button>
+  </div>
+</div>
+
+<div id="tab-camps">
+<div class="filters">
+  <div class="filter-row">
+    <input type="text" id="f-search" placeholder="🔍  Search by keyword: baseball, engineering, swimming, LEGO, Muskoka, overnight…" oninput="render()">
+    <button onclick="clearAll()" style="font-size:12px;padding:5px 10px;border-radius:6px;border:0.5px solid #ccc;background:#fff;cursor:pointer">Clear</button>
+  </div>
+  <div class="filter-row">
+    <label>City/Region</label>
+    <select id="f-city" onchange="render()">
+      <option value="">All locations</option>
+      <optgroup label="Waterloo Region">
+        <option>Waterloo</option><option>Kitchener</option><option>Cambridge</option><option>Wilmot</option>
+      </optgroup>
+      <optgroup label="Ontario &amp; Canada">
+        <option value="provincial">Ontario-wide</option>
+        <option value="national">Canada-wide</option>
+      </optgroup>
+    </select>
+    <label>Age</label>
+    <select id="f-age" onchange="render()">
+      <option value="">All ages</option>
+      <option value="4-6">4–6</option>
+      <option value="5-8">5–8</option>
+      <option value="7-12">7–12</option>
+      <option value="9-14">9–14</option>
+      <option value="12-17">12–17</option>
+    </select>
+    <label>Type</label>
+    <select id="f-type" onchange="render()">
+      <option value="">All types</option>
+      <option>Sports</option>
+      <option>STEM / Tech</option>
+      <option>Arts</option>
+      <option>Nature / Outdoor</option>
+      <option>Multi-activity</option>
+      <option>Aquatics</option>
+      <option>Overnight</option>
+      <option>Leadership</option>
+    </select>
+    <label>Status</label>
+    <select id="f-status" onchange="render()">
+      <option value="">All</option>
+      <option value="open">Open</option>
+      <option value="full">Full/Waitlist</option>
+      <option value="soon">Opening Soon</option>
+    </select>
+    <label>Style</label>
+    <select id="f-style" onchange="render()">
+      <option value="">All styles</option>
+      <option value="Day">Day camp only</option>
+      <option value="Overnight">Overnight (accommodation incl.)</option>
+      <option value="Day/Overnight">Day or Overnight</option>
+    </select>
+    <label>Max $/wk</label>
+    <input type="number" id="f-price" placeholder="e.g. 500" style="width:80px" onchange="render()">
+  </div>
+</div>
+<div class="count" id="camp-count"></div>
+<div class="grid" id="camp-grid"></div>
+</div>
+
+<div id="tab-calendar" style="display:none">
+<div style="margin-bottom:10px;font-size:13px;color:#555">Key registration dates across all scopes. Add reminders from any camp card.</div>
+<div class="calendar-grid" id="cal-grid"></div>
+</div>
+
+<div id="tab-map" style="display:none">
+<div class="map-box">
+  <h3 style="font-size:14px;font-weight:600;color:#1a5c96;margin-bottom:6px">Camp Locations</h3>
+  <p style="font-size:12px;color:#555">Click any location to open Google Maps.</p>
+  <div class="map-grid" id="map-grid"></div>
+</div>
+</div>
+
+<div id="tab-reminders" style="display:none">
+<div style="font-size:13px;color:#555;margin-bottom:10px">Camps you've flagged for reminders.</div>
+<div id="reminder-list"></div>
+</div>
+</div>
+
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+<div class="modal">
+  <button class="modal-close" onclick="closeModalBtn()">✕</button>
+  <div id="modal-body"></div>
+</div>
+</div>
+
+<script>
+const CAMPS = [
+// ── WATERLOO REGION (local) ─────────────────────────────────────────────
+{id:1,scope:'local',name:"Summer Fun Centre",org:"City of Waterloo",city:"Waterloo",type:"Multi-activity",campStyle:"Day",ages:"4–6",ageMin:4,ageMax:6,price:0,priceLabel:"Subsidized/free",status:"open",regOpen:"Feb 24 (residents) · Feb 27 (non-res)",regDate:"2026-02-24",activities:["Crafts","Outdoor play","Songs","Water days","Weekly themes","Special guests"],address:"Waterloo Memorial Recreation Complex, 101 Father David Bauer Dr, Waterloo",link:"https://www.waterloo.ca/recreation-and-sports/camps-and-youth-leadership-programs/sign-up-for-summer-camp/",notes:"Runs July–August, Mon–Fri 8am–5pm. Subsidy via code ROW2026. Inclusion support arranged directly with City of Waterloo."},
+{id:2,scope:'local',name:"Summer Adventure Camp",org:"City of Waterloo",city:"Waterloo",type:"Multi-activity",campStyle:"Day",ages:"7–12",ageMin:7,ageMax:12,price:0,priceLabel:"Subsidized/see site",status:"open",regOpen:"Feb 24 (residents) · Feb 27 (non-res)",regDate:"2026-02-24",activities:["Outdoor adventure","Games","Crafts","Swimming","Weekly themes"],address:"RIM Park, 2001 University Ave E, Waterloo",link:"https://www.waterloo.ca/recreation-and-sports/camps-and-youth-leadership-programs/sign-up-for-summer-camp/",notes:"Variety Day Camp (7–12) also available. Register at ActiveWaterloo."},
+{id:3,scope:'local',name:"Adapted Discovery Camp",org:"City of Waterloo",city:"Waterloo",type:"Multi-activity",campStyle:"Day",ages:"10–14",ageMin:10,ageMax:14,price:0,priceLabel:"See website",status:"open",regOpen:"Feb 24 2026",regDate:"2026-02-24",activities:["Crafts","Outdoor play","Songs","Games","Water days"],address:"Albert McCormick Community Centre, Waterloo",link:"https://www.waterloo.ca/recreation-and-sports/camps-and-youth-leadership-programs/sign-up-for-summer-camp/",notes:"For youth with diverse needs or disabilities."},
+{id:4,scope:'local',name:"Golden Hawk Jr. Activity Camp",org:"Wilfrid Laurier University",city:"Waterloo",type:"Multi-activity",campStyle:"Day",ages:"5–7",ageMin:5,ageMax:7,price:285,priceLabel:"$285/week",status:"open",regOpen:"Feb 3 2026",regDate:"2026-02-03",activities:["Themed days","Sports","Crafts","Swimming","Rock climbing","Friday Funday"],address:"Wilfrid Laurier University, Waterloo",link:"https://recreation.laurierathletics.com/sports/2024/1/26/summer-camps.aspx",notes:"Run by Laurier student-athletes. 9am–4pm. Extended care available."},
+{id:5,scope:'local',name:"Jr. Lifeguarding & Swim Camp",org:"Wilfrid Laurier University",city:"Waterloo",type:"Aquatics",campStyle:"Day",ages:"9–12",ageMin:9,ageMax:12,price:295,priceLabel:"$295/week",status:"open",regOpen:"Feb 3 2026",regDate:"2026-02-03",activities:["Swim endurance","Stroke technique","Lifesaving skills","Competitive swimming intro"],address:"Wilfrid Laurier University, Waterloo",link:"https://recreation.laurierathletics.com/sports/2024/1/26/summer-camps.aspx",notes:"Prerequisite: swim 50m & tread water 2 min. Weeks: July 6–10, July 27–31, Aug 10–14."},
+{id:6,scope:'local',name:"Basketball Camp (Girls)",org:"Wilfrid Laurier University",city:"Waterloo",type:"Sports",campStyle:"Day",ages:"8–13",ageMin:8,ageMax:13,price:310,priceLabel:"$310/week",status:"open",regOpen:"Feb 3 2026",regDate:"2026-02-03",activities:["Ball-handling","Shooting","Team play","Sportsmanship","Friday pizza lunch"],address:"Wilfrid Laurier University, Waterloo",link:"https://recreation.laurierathletics.com/sports/2024/1/26/summer-camps.aspx",notes:"July 6–10. 10:1 player-to-coach ratio."},
+{id:7,scope:'local',name:"Basketball Camp (Boys)",org:"Wilfrid Laurier University",city:"Waterloo",type:"Sports",campStyle:"Day",ages:"8–13",ageMin:8,ageMax:13,price:310,priceLabel:"$310/week",status:"open",regOpen:"Feb 3 2026",regDate:"2026-02-03",activities:["Skill drills","Team chemistry","Game development","Friday Funday"],address:"Wilfrid Laurier University, Waterloo",link:"https://recreation.laurierathletics.com/sports/2024/1/26/summer-camps.aspx",notes:"July 13–17 & Aug 10–14."},
+{id:8,scope:'local',name:"COED Elite Basketball Camp",org:"Wilfrid Laurier University",city:"Waterloo",type:"Sports",campStyle:"Day",ages:"12–16",ageMin:12,ageMax:16,price:325,priceLabel:"$325/week",status:"open",regOpen:"Feb 3 2026",regDate:"2026-02-03",activities:["Elite skill development","Team tactics","Competitive play"],address:"Wilfrid Laurier University, Waterloo",link:"https://recreation.laurierathletics.com/sports/2024/1/26/summer-camps.aspx",notes:"July 20–24. All genders."},
+{id:9,scope:'local',name:"Neighbourhood Day Camp — Little Explorers",org:"City of Kitchener",city:"Kitchener",type:"Multi-activity",campStyle:"Day",ages:"4–6 (born 2020–21)",ageMin:4,ageMax:6,price:0,priceLabel:"See Kitchener.ca",status:"open",regOpen:"Mar 24 (residents) · Mar 31 (all)",regDate:"2026-03-24",activities:["Games","Outdoor activities","Arts & crafts","Songs","Water days","Walking trips"],address:"Multiple Kitchener community centres",link:"https://www.kitchener.ca/en/recreation-and-sports/summer-programs.aspx",notes:"9 weeks July 6–Aug 28. New 2026 birth-year groupings."},
+{id:10,scope:'local',name:"Neighbourhood Day Camp — Junior Explorers",org:"City of Kitchener",city:"Kitchener",type:"Multi-activity",campStyle:"Day",ages:"7–9 (born 2017–19)",ageMin:7,ageMax:9,price:0,priceLabel:"See Kitchener.ca",status:"open",regOpen:"Mar 24 (residents) · Mar 31 (all)",regDate:"2026-03-24",activities:["Games","Outdoor activities","Crafts","Water days","Walking trips"],address:"Multiple Kitchener community centres",link:"https://www.kitchener.ca/en/recreation-and-sports/summer-programs.aspx",notes:"Breithaupt RC runs until Sept."},
+{id:11,scope:'local',name:"Adventure Camp",org:"City of Kitchener",city:"Kitchener",type:"Multi-activity",campStyle:"Day",ages:"10–12 (born 2014–16)",ageMin:10,ageMax:12,price:0,priceLabel:"See Kitchener.ca",status:"open",regOpen:"Mar 24 (residents) · Mar 31 (all)",regDate:"2026-03-24",activities:["Outdoor adventure","Sports","Arts","Themed weeks"],address:"Multiple Kitchener community centres",link:"https://www.kitchener.ca/en/recreation-and-sports/summer-programs.aspx",notes:"Redesigned 2026 with age-appropriate groupings."},
+{id:12,scope:'local',name:"Sports Camp",org:"City of Kitchener",city:"Kitchener",type:"Sports",campStyle:"Day",ages:"8–12",ageMin:8,ageMax:12,price:0,priceLabel:"See Kitchener.ca",status:"open",regOpen:"Mar 24 2026",regDate:"2026-03-24",activities:["Soccer","Dodgeball","Volleyball","Kickball","Team games"],address:"Various Kitchener locations",link:"https://www.kitchener.ca/en/recreation-and-sports/summer-programs.aspx",notes:"9am–3pm, no before/aftercare."},
+{id:13,scope:'local',name:"All About the Arts Camp",org:"City of Kitchener",city:"Kitchener",type:"Arts",campStyle:"Day",ages:"10–12",ageMin:10,ageMax:12,price:0,priceLabel:"See Kitchener.ca",status:"open",regOpen:"Mar 24 2026",regDate:"2026-03-24",activities:["Painting","Sketching","Mixed media","Colour & texture"],address:"Various Kitchener locations",link:"https://www.kitchener.ca/en/recreation-and-sports/summer-programs.aspx",notes:"Hands-on art all week."},
+{id:14,scope:'local',name:"Nature Explorer Camp",org:"City of Kitchener",city:"Kitchener",type:"Nature / Outdoor",campStyle:"Day",ages:"5–12",ageMin:5,ageMax:12,price:0,priceLabel:"See Kitchener.ca",status:"open",regOpen:"Mar 24 2026",regDate:"2026-03-24",activities:["Nature exploration","Environmental art","Nature crafts","Science activities"],address:"Various Kitchener parks",link:"https://www.kitchener.ca/en/recreation-and-sports/summer-programs.aspx",notes:"Outdoor, play-based environmental focus."},
+{id:15,scope:'local',name:"YMCA At the Y Day Camp",org:"YMCA of Three Rivers",city:"Kitchener",type:"Multi-activity",campStyle:"Day",ages:"4–8",ageMin:4,ageMax:8,price:315,priceLabel:"$315/week",status:"open",regOpen:"Ongoing",regDate:"2026-01-01",activities:["Active play","Skill building","Friendship","Swimming","Themed weeks"],address:"333 Carwood Ave, Kitchener / 250 Hespeler Rd, Cambridge",link:"https://www.ymcathreerivers.ca/day-camp",notes:"8 sessions July 6–Aug 28. Drop-off 8–9am, pick-up 4–5pm. Fee assistance available. $50 deposit."},
+{id:16,scope:'local',name:"Curiosity Camp",org:"Ken Seiling Waterloo Region Museum",city:"Kitchener",type:"Nature / Outdoor",campStyle:"Day",ages:"5–11",ageMin:5,ageMax:11,price:65,priceLabel:"~$65/day",status:"open",regOpen:"Feb 9 (enrolled) · Feb 23 (public)",regDate:"2026-02-09",activities:["Museum exploration","Hands-on crafts","Outdoor play","Nature builds","Themed weeks"],address:"10 Huron Road, Kitchener",link:"https://regionofwaterloomuseums.ca/en/whats-on/camps.aspx",notes:"June 29–Aug 28. Subsidy code KSWRMSubsidy. Eventbrite registration."},
+{id:17,scope:'local',name:"Movers & Makers Camp",org:"Waterloo Region Museums",city:"Cambridge",type:"Arts",campStyle:"Day",ages:"5–11",ageMin:5,ageMax:11,price:65,priceLabel:"~$65/day",status:"open",regOpen:"Feb 2026",regDate:"2026-02-01",activities:["Building challenges","Arts & crafts","Games","Outdoor play"],address:"McDougall Cottage, 89 Grand Ave S, Cambridge",link:"https://regionofwaterloomuseums.ca/en/whats-on/camps.aspx",notes:"Bring lunch. Members save 10% with code 'memcode'."},
+{id:18,scope:'local',name:"STEM Camp Kitchener",org:"STEM Camp (non-profit)",city:"Kitchener",type:"STEM / Tech",campStyle:"Day",ages:"4–13",ageMin:4,ageMax:13,price:357,priceLabel:"$357/week",status:"open",regOpen:"Open now",regDate:"2025-12-01",activities:["Coding with Minecraft","Robot programming","Model building","Science experiments","Themed challenges"],address:"Doon Presbyterian Church / St. Matthews Lutheran Church, Kitchener",link:"https://stemcamp.ca/ontario-camp-locations/stem-camp-kitchener/",notes:"Non-profit, founded 2013. 4 themed weeks. AC at Kitchener Centre location."},
+{id:19,scope:'local',name:"Brick Works — LEGO Robotics & Coding",org:"Brick Works Academy",city:"Waterloo",type:"STEM / Tech",campStyle:"Day",ages:"5–13",ageMin:5,ageMax:13,price:0,priceLabel:"See brickworksacademy.com",status:"open",regOpen:"Open now",regDate:"2025-11-01",activities:["LEGO robotics","Coding","Minecraft","Engineering","Computational thinking"],address:"Uptown Waterloo",link:"https://brickworksacademy.com/waterloo-summer-camps",notes:"Multiple streams: Jr. Robotics (5–6), Intro (6–9), Senior coding (9–13), Minecraft & game design (8–13), D&D (9–14), Video production (8–13)."},
+{id:20,scope:'local',name:"Focus on Nature Photography Camp",org:"Focus on Nature",city:"Waterloo",type:"Nature / Outdoor",campStyle:"Day",ages:"8–16",ageMin:8,ageMax:16,price:0,priceLabel:"Free/subsidized spots available",status:"open",regOpen:"Open — spots filling",regDate:"2025-12-01",activities:["Guided photo walks","Outdoor games","Nature activities","Image editing","Slideshow creation"],address:"Waterloo Region (outdoor sites)",link:"https://focusonnature.ca/waterloo-camps",notes:"Camera & laptop provided. Max 25 campers/day. Free spots via Kids to Camp Fund."},
+{id:21,scope:'local',name:"THEMUSEUM Day Camp",org:"THEMUSEUM",city:"Kitchener",type:"STEM / Tech",campStyle:"Day",ages:"5–14",ageMin:5,ageMax:14,price:0,priceLabel:"See themuseum.ca",status:"open",regOpen:"Open now",regDate:"2026-01-01",activities:["STEAM programming","MakerSpace","Interactive exhibits","Science","Arts integration"],address:"10 King St W, Kitchener",link:"https://themuseum.ca/camps/",notes:"MakerSpace Camps for ages 9–14. Summer, March Break, and PD Days."},
+{id:22,scope:'local',name:"Waterloo United Soccer Camp (U5–U7)",org:"Waterloo United / WR Minor Soccer",city:"Waterloo",type:"Sports",campStyle:"Day",ages:"3–7",ageMin:3,ageMax:7,price:0,priceLabel:"See waterloounited.com",status:"open",regOpen:"Open now",regDate:"2026-01-21",activities:["Soccer skills","Fun games","Multi-sport","Motor skill building"],address:"RIM Park, 2001 University Ave E, Waterloo",link:"https://www.waterloounited.com/summer-camps-2026/",notes:"Half-day camps. Grassroots focus on fun. Jumpstart assistance available."},
+{id:23,scope:'local',name:"Township of Wilmot Day Camp",org:"Township of Wilmot",city:"Wilmot",type:"Multi-activity",campStyle:"Day",ages:"5–12",ageMin:5,ageMax:12,price:275,priceLabel:"$275/week",status:"open",regOpen:"Feb 3 2026",regDate:"2026-02-03",activities:["Outdoor play","Crafts","Games","Swimming","Weekly themes"],address:"1291 Nafziger Road, Baden, ON",link:"https://www.wilmot.ca/recreation-and-culture/recreation-programs-and-facilities/day-camps/",notes:"Runs July 6–Sept 4. Ages 5–7 and 8–12 groups. PD Day camps $55/day."},
+{id:24,scope:'local',name:"UW Warriors Summer Camp",org:"University of Waterloo Athletics",city:"Waterloo",type:"Multi-activity",campStyle:"Day",ages:"5–16",ageMin:5,ageMax:16,price:0,priceLabel:"See UW Athletics",status:"open",regOpen:"Jan 22 2026",regDate:"2026-01-22",activities:["Multi-sport","Leadership","Skill development","Healthy living"],address:"University of Waterloo campus",link:"https://athletics.uwaterloo.ca/sports/summer-camps",notes:"Led by UW student-athletes. Inclusive environment."},
+{id:25,scope:'local',name:"EAFWR Summer Program",org:"EAFWR (disability support)",city:"Waterloo",type:"Multi-activity",campStyle:"Day",ages:"5–21",ageMin:5,ageMax:21,price:0,priceLabel:"Subsidized",status:"open",regOpen:"Via MyCommunityHub",regDate:"2026-01-01",activities:["Themed activities","Overnight vacation","Music","Swimming","Campfires"],address:"Waterloo Region",link:"https://www.eafwr.on.ca/programs/summer-program/",notes:"For individuals with disabilities. LIT program for 14+. Funded by WR Community Foundation."},
+
+// ── ONTARIO PROVINCIAL ─────────────────────────────────────────────────
+{id:30,scope:'provincial',name:"Art Gallery of Ontario (AGO) Art Camp",org:"Art Gallery of Ontario",city:"Toronto",type:"Arts",campStyle:"Day",ages:"6–13",ageMin:6,ageMax:13,price:0,priceLabel:"See AGO website",status:"open",regOpen:"Open — members priority",regDate:"2026-01-01",activities:["Painting","Drawing","Sculpture","Mixed media","Gallery exploration","Outdoor activities"],address:"317 Dundas St W, Toronto, ON",link:"https://ago.ca",notes:"Unique camps blend hands-on artmaking with world-class gallery visits. Members get priority registration and discounts."},
+{id:31,scope:'provincial',name:"True North Sports Camps",org:"True North Sports",city:"Ontario (province-wide)",type:"Sports",campStyle:"Day",ages:"6–16",ageMin:6,ageMax:16,price:430,priceLabel:"$430/week (early bird discounts)",status:"open",regOpen:"Open — early bird before Jan 31",regDate:"2025-12-01",activities:["Baseball","Basketball","Flag football","Soccer","Hockey","Multi-sport"],address:"Multiple Ontario locations",link:"https://truenorthsportscamps.com",notes:"20th anniversary 2026! Week-long camps July–August. All skill levels. Multi-week discounts available."},
+{id:32,scope:'provincial',name:"Muskoka Woods",org:"Muskoka Woods",city:"Muskoka",type:"Overnight",campStyle:"Overnight",ages:"6–16",ageMin:6,ageMax:16,price:0,priceLabel:"See muskokawoods.com",status:"open",regOpen:"Open now",regDate:"2025-10-01",activities:["50+ activities","Waterslide","Inflatable waterpark","Waterski","Wakeboarding","High ropes","Media arts","Athletics"],address:"Lake Rosseau, Muskoka, ON",link:"https://muskokawoods.com",notes:"Ontario's premier overnight camp. Beautiful lakefront on Lake Rosseau. Full-time leadership team with education & youth development degrees."},
+{id:33,scope:'provincial',name:"Camp Muskoka",org:"Camp Muskoka",city:"Muskoka",type:"Overnight",campStyle:"Overnight",ages:"5–17",ageMin:5,ageMax:17,price:0,priceLabel:"See campmuskoka.com",status:"open",regOpen:"Open now",regDate:"2025-10-01",activities:["50+ activities","Canoeing","Archery","Swimming","Leadership","Outdoor adventures"],address:"Bracebridge, Muskoka, ON",link:"https://campmuskoka.com",notes:"Day camp option also available with transportation from Bracebridge. 24/7 healthcare on site."},
+{id:34,scope:'provincial',name:"Camp Kandalore",org:"Camp Kandalore",city:"Algonquin",type:"Overnight",campStyle:"Overnight",ages:"7–17",ageMin:7,ageMax:17,price:0,priceLabel:"See kandalore.com",status:"open",regOpen:"Open now",regDate:"2025-10-01",activities:["30+ activities","Canoe tripping","Whitewater expeditions","Wilderness skills","Team building"],address:"Algonquin Highlands, ON",link:"https://kandalore.com",notes:"75+ year tradition. Renowned canoe-tripping program. Overnight excursions to 12-day whitewater expeditions for seniors."},
+{id:35,scope:'provincial',name:"Canadian Adventure Camp",org:"Canadian Adventure Camp",city:"Temagami",type:"Overnight",campStyle:"Overnight",ages:"7–16",ageMin:7,ageMax:16,price:0,priceLabel:"See canadianadventurecamp.com",status:"open",regOpen:"Open now",regDate:"2025-10-01",activities:["35 activities","Canoeing","Archery","Swimming","Campfires","Wilderness exploration"],address:"Private island, Temagami wilderness, ON",link:"https://canadianadventurecamp.com",notes:"Since 1975. Private island setting. Campers choose their own daily schedule from 35 activities."},
+{id:36,scope:'provincial',name:"Camp Wenonah",org:"Camp Wenonah",city:"Muskoka",type:"Overnight",campStyle:"Overnight",ages:"6–17",ageMin:6,ageMax:17,price:0,priceLabel:"See campwenonah.com",status:"open",regOpen:"Open now",regDate:"2025-10-01",activities:["Canoeing","Archery","Swimming","Leadership","Wilderness trips","ROOTS & POLARIS leadership"],address:"Muskoka, ON",link:"https://campwenonah.com",notes:"Leadership programs for 15–17 yr olds. Complimentary airport transportation for international campers."},
+{id:37,scope:'provincial',name:"Lakefield College School Summer",org:"Lakefield College School",city:"Ontario (province-wide)",type:"Multi-activity",campStyle:"Day/Overnight",ages:"4–18",ageMin:4,ageMax:18,price:0,priceLabel:"See lcs.on.ca",status:"open",regOpen:"Open now",regDate:"2026-01-01",activities:["Canoeing","Rock climbing","Outdoor leadership","Farm-to-table learning","Wilderness skills"],address:"Lakefield, ON (315-acre waterfront campus)",link:"https://lcs.on.ca",notes:"147 years of outdoor education. Both day and overnight options. Northcote Farm programming."},
+{id:38,scope:'provincial',name:"Budding Genius Academy (STEAM + French)",org:"Budding Genius Academy",city:"Ontario (province-wide)",type:"STEM / Tech",campStyle:"Day",ages:"4–14",ageMin:4,ageMax:14,price:0,priceLabel:"See buddinggenius.ca",status:"open",regOpen:"Open now",regDate:"2026-01-01",activities:["50+ STEAM projects","Minecraft","Robotics","LEGO SPIKE","Architecture","AI","Astronomy","Game & app development","French theatre","Creative writing"],address:"Multiple Ontario locations",link:"https://buddinggenius.ca",notes:"Bilingual STEAM curriculum. French language stream includes theatre and creative writing. Outdoor field trips."},
+{id:39,scope:'provincial',name:"STEMGirls Camp",org:"Bishop Strachan School",city:"Toronto",type:"STEM / Tech",campStyle:"Day",ages:"10–16",ageMin:10,ageMax:16,price:0,priceLabel:"See bss.on.ca",status:"open",regOpen:"Open now",regDate:"2026-01-01",activities:["Design thinking","Coding","Innovation","Leadership","STEM challenges"],address:"298 Lonsdale Rd, Toronto, ON",link:"https://bss.on.ca",notes:"Voices of Leadership program builds confidence. Also offers credit courses toward Ontario Secondary School Diploma."},
+{id:40,scope:'provincial',name:"GBTC Theatre Camp",org:"Great Big Theatre Company",city:"Ontario (province-wide)",type:"Arts",campStyle:"Day",ages:"5–17",ageMin:5,ageMax:17,price:0,priceLabel:"See gbtc.com",status:"open",regOpen:"Open now",regDate:"2026-01-01",activities:["Plays","Monologues","Improv","Musical theatre","Mime","Stagecraft","Weekly performances"],address:"Brampton, Burlington, Cambridge, Georgetown, Guelph, Hamilton, London, Markham, Mississauga, Oakville, Richmond Hill, St. Catharines, Waterloo, Whitby, Toronto",link:"https://gbtc.com",notes:"Founded 1994. One-week sessions. Camps in Waterloo and 13 other Ontario locations!"},
+
+// ── NATIONAL / CANADA-WIDE ─────────────────────────────────────────────
+{id:50,scope:'national',name:"National Gallery of Canada Art Adventure Camp",org:"National Gallery of Canada",city:"Ottawa",type:"Arts",campStyle:"Day",ages:"6–13",ageMin:6,ageMax:13,price:380,priceLabel:"$380/week (members $325)",status:"open",regOpen:"Feb 9 (members) · Feb 10 (public)",regDate:"2026-02-09",activities:["Art mysteries","Painting","Drawing","Sculpting","Mixed media","Gallery immersion","Vernissage showcase"],address:"380 Sussex Dr, Ottawa, ON",link:"https://www.gallery.ca/learn/for-kids-and-families/summer-day-camps-2026",notes:"Bilingual (EN/FR). Pre/post care 8am–5pm included. Max 30 per week. Themes: Art Adventure & Nature and Art. Weeks: July 6–Aug 28."},
+{id:51,scope:'national',name:"Canadian Forces Morale & Welfare Day Camp",org:"CFMWS / PSP Recreation",city:"Ottawa",type:"Multi-activity",campStyle:"Day",ages:"4–14",ageMin:4,ageMax:14,price:0,priceLabel:"See cfmws.ca",status:"open",regOpen:"Open now",regDate:"2026-01-01",activities:["Sports","Canadian culture week","Dance & rhythm","Arts","Themed adventure weeks","Inclusion support"],address:"National Capital Region (Ottawa-Gatineau)",link:"https://cfmws.ca",notes:"2026 themes: O'Canada, Quest & Exploration, Sports, Dance, Time Machine, Arts. Inclusion support 1:3 to 1:1. Swim lessons now separate registration."},
+{id:52,scope:'national',name:"Camps Canada (Ottawa)",org:"Camps Canada",city:"Ottawa",type:"Multi-activity",campStyle:"Day",ages:"4–14",ageMin:4,ageMax:14,price:0,priceLabel:"2026 rates frozen at 2025 levels",status:"open",regOpen:"Open now",regDate:"2026-01-01",activities:["Teacher-led programming","Multi-sport","Arts","Outdoor activities","STEAM","Leadership"],address:"Orleans, Kanata, Barrhaven — Ottawa, ON",link:"https://campscanada.com",notes:"Teacher-certified staff. 10 hrs free extended care (7:30am–5:30pm). No hidden fees. 2026 price freeze to support families."},
+{id:53,scope:'national',name:"YMCA Day Camps (National)",org:"YMCA Canada",city:"Canada-wide",type:"Multi-activity",campStyle:"Day",ages:"4–16",ageMin:4,ageMax:16,price:315,priceLabel:"~$315/week (varies by location)",status:"open",regOpen:"Varies by location",regDate:"2026-01-01",activities:["Swimming","Sports","Arts & crafts","Leadership","Nature","Themed weeks"],address:"YMCAs across Canada — find your local Y",link:"https://ymca.ca",notes:"Fee assistance available at all locations. Programs vary by province. Search your local YMCA for exact pricing and dates."},
+{id:54,scope:'national',name:"Canadian Camps Association — Accredited Camps",org:"Canadian Camps Association",city:"Canada-wide",type:"Multi-activity",campStyle:"Day/Overnight",ages:"4–18",ageMin:4,ageMax:18,price:0,priceLabel:"Free–$8,500 (varies widely)",status:"open",regOpen:"Varies by camp",regDate:"2026-01-01",activities:["800+ accredited camps nationwide","All activity types","Day & overnight","Sports","Arts","STEM","Nature","Leadership"],address:"All provinces: BC, AB, SK, MB, ON, QC, NB, NS, PE, NL",link:"https://www.ccamping.org",notes:"Nonprofit national federation of 8 provincial camping associations. CCA accreditation ensures safety and quality standards. Find camps by province at ccamping.org."},
+{id:55,scope:'national',name:"National Music Centre — Music Makers",org:"National Music Centre",city:"Canada-wide",type:"Arts",campStyle:"Day",ages:"5–12",ageMin:5,ageMax:12,price:0,priceLabel:"See nmc.ca",status:"open",regOpen:"Open now",regDate:"2026-01-01",activities:["Music intro (ages 5–9)","Build-a-Band (ages 9–12)","Instruments","Band performance","Music theory"],address:"850 4th St SE, Calgary, AB (national institution)",link:"https://nmc.ca",notes:"Music Makers for beginners (5–9) and Build-a-Band for jammers (9–12). Registration now open."},
+];
+
+const STATUS_LABEL={open:"Open",full:"Full/Waitlist",soon:"Opening Soon",closed:"Closed"};
+const STATUS_CLASS={open:"badge-open",full:"badge-full",soon:"badge-soon",closed:"badge-closed"};
+const SCOPE_LABEL={local:"📍 Local",provincial:"🏛️ Ontario",national:"🍁 National"};
+const SCOPE_CLASS={local:"scope-tag-local",provincial:"scope-tag-provincial",national:"scope-tag-national"};
+
+let currentScope='all';
+let reminders=[];
+try{reminders=JSON.parse(localStorage.getItem('wr_camp_rem')||'[]')}catch(e){}
+
+function saveRem(){try{localStorage.setItem('wr_camp_rem',JSON.stringify(reminders))}catch(e){}}
+
+function updateRemCount(){
+  const el=document.getElementById('rem-count');
+  el.textContent=reminders.length?' ('+reminders.length+')':'';
+}
+
+function setScope(s,btn){
+  currentScope=s;
+  document.querySelectorAll('.scope-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function showTab(t){
+  ['camps','calendar','map','reminders'].forEach(id=>{
+    document.getElementById('tab-'+id).style.display=id===t?'block':'none';
+  });
+  document.querySelectorAll('.tab').forEach((b,i)=>{
+    b.classList.toggle('active',['camps','calendar','map','reminders'][i]===t);
+  });
+  if(t==='calendar')renderCalendar();
+  if(t==='map')renderMap();
+  if(t==='reminders')renderReminders();
+}
+
+function ageMatch(c,val){
+  if(!val)return true;
+  const[lo,hi]=val.split('-').map(Number);
+  return c.ageMin<=hi&&c.ageMax>=lo;
+}
+
+function keywordMatch(c,q){
+  if(!q)return true;
+  const hay=[c.name,c.org,c.city,c.type,c.campStyle,c.ages,c.priceLabel,c.notes||'',c.address,...c.activities].join(' ').toLowerCase();
+  return q.toLowerCase().split(/\s+/).filter(Boolean).every(w=>hay.includes(w));
+}
+
+function clearAll(){
+  document.getElementById('f-search').value='';
+  document.getElementById('f-city').value='';
+  document.getElementById('f-age').value='';
+  document.getElementById('f-type').value='';
+  document.getElementById('f-status').value='';
+  document.getElementById('f-price').value='';
+  render();
+}
+
+function render(){
+  const city=document.getElementById('f-city').value;
+  const age=document.getElementById('f-age').value;
+  const type=document.getElementById('f-type').value;
+  const status=document.getElementById('f-status').value;
+  const style=document.getElementById('f-style').value;
+  const price=parseFloat(document.getElementById('f-price').value)||Infinity;
+  const q=document.getElementById('f-search').value.trim();
+
+  // For out-of-region camps, automatically require accommodation (overnight)
+  const filtered=CAMPS.filter(c=>{
+    const isOutOfRegion = c.scope!=='local';
+    const accomOk = !isOutOfRegion || c.campStyle==='Overnight' || c.campStyle==='Day/Overnight';
+    return (currentScope==='all'||c.scope===currentScope)&&
+    (!city||(city==='provincial'&&c.scope==='provincial')||(city==='national'&&c.scope==='national')||(city!=='provincial'&&city!=='national'&&(c.city===city||c.address.toLowerCase().includes(city.toLowerCase()))))&&
+    ageMatch(c,age)&&
+    (!type||c.type===type)&&
+    (!status||c.status===status)&&
+    (!style||c.campStyle===style)&&
+    accomOk&&
+    (c.price===0||c.price<=price)&&
+    keywordMatch(c,q);
+  });
+    document.getElementById('camp-count').textContent=filtered.length+' camp'+(filtered.length!==1?'s':'')+' found';
+
+  // Add a note when viewing provincial/national scope
+  const outNote = (currentScope==='provincial'||currentScope==='national')
+    ? '<div style="background:#fff8e8;border:0.5px solid #f0d080;border-radius:8px;padding:9px 13px;font-size:12px;color:#7a5c00;margin-bottom:10px">🏠 Out-of-region camps shown here include <strong>accommodation</strong> (overnight). Day-only out-of-region camps are hidden as they are not feasible without lodging.</div>'
+    : '';
+  
+
+  const local=filtered.filter(c=>c.scope==='local');
+  const prov=filtered.filter(c=>c.scope==='provincial');
+  const natl=filtered.filter(c=>c.scope==='national');
+
+  let html='';
+  if(!filtered.length){html='<div class="empty">No camps match your filters. Try clearing some filters.</div>';}
+  else{
+    if(local.length){html+=`<div class="section-divider">📍 Waterloo Region (${local.length})</div><div class="grid">${local.map(cardHTML).join('')}</div>`;}
+    if(prov.length){html+=`<div class="section-divider">🏛️ Ontario-wide — overnight/accommodation included (${prov.length})</div><div class="grid">${prov.map(cardHTML).join('')}</div>`;}
+    if(natl.length){html+=`<div class="section-divider">🍁 Canada-wide / National — overnight/accommodation included (${natl.length})</div><div class="grid">${natl.map(cardHTML).join('')}</div>`;}
+  }
+  document.getElementById('camp-grid').innerHTML=outNote+html;
+}
+
+function cardHTML(c){
+  return`<div class="card" onclick="openModal(${c.id})">
+    <div class="card-header">
+      <div class="card-title">${c.name}</div>
+      <span class="badge ${STATUS_CLASS[c.status]}">${STATUS_LABEL[c.status]}</span>
+    </div>
+    <div class="card-org">${c.org} · ${c.city}</div>
+    <div class="card-meta">
+      <span class="${SCOPE_CLASS[c.scope]}">${SCOPE_LABEL[c.scope]}</span>
+      <span class="tag">${c.type}</span>
+      <span class="tag tag-age">Ages ${c.ages}</span>
+      <span class="tag tag-price">${c.priceLabel}</span>
+      ${c.campStyle==='Overnight'?'<span class="tag tag-overnight">Overnight</span>':''}
+    </div>
+    <div class="card-activities">${c.activities.slice(0,4).join(' · ')}${c.activities.length>4?' · …':''}</div>
+    <div class="card-reg">📅 Reg: ${c.regOpen}</div>
+  </div>`;
+}
+
+function openModal(id){
+  const c=CAMPS.find(x=>x.id===id);
+  const hasRem=reminders.find(r=>r.id===id);
+  document.getElementById('modal-body').innerHTML=`
+    <h2>${c.name}</h2>
+    <div class="modal-org">${c.org} · ${c.city}</div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px">
+      <span class="badge ${STATUS_CLASS[c.status]}">${STATUS_LABEL[c.status]}</span>
+      <span class="${SCOPE_CLASS[c.scope]}">${SCOPE_LABEL[c.scope]}</span>
+      <span class="tag">${c.type}</span>
+      <span class="tag tag-age">Ages ${c.ages}</span>
+      <span class="tag tag-price">${c.priceLabel}</span>
+      ${c.campStyle==='Overnight'?'<span class="tag tag-overnight">Overnight</span>':''}
+    </div>
+    <div class="section-title">Details</div>
+    <div class="detail-row"><div class="detail-label">Location</div><div class="detail-val">${c.address}</div></div>
+    <div class="detail-row"><div class="detail-label">Reg opens</div><div class="detail-val">${c.regOpen}</div></div>
+    <div class="detail-row"><div class="detail-label">Price</div><div class="detail-val">${c.priceLabel}</div></div>
+    <div class="detail-row"><div class="detail-label">Camp style</div><div class="detail-val">${c.campStyle}</div></div>
+    <div class="section-title">Activities</div>
+    <div class="pill-list">${c.activities.map(a=>`<span class="pill">${a}</span>`).join('')}</div>
+    ${c.notes?`<div class="section-title">Notes</div><div style="font-size:12px;color:#555;line-height:1.6">${c.notes}</div>`:''}
+    <a href="${c.link}" target="_blank" style="display:inline-block;margin-top:12px;font-size:12px;color:#1a5c96">Visit camp website ↗</a>
+    <button class="reminder-btn" onclick="toggleReminder(${c.id})" id="rem-btn-${c.id}">
+      ${hasRem?'✓ Reminder set — click to remove':'🔔 Remind me when registration opens'}
+    </button>`;
+  document.getElementById('modal').classList.add('open');
+}
+
+function toggleReminder(id){
+  const c=CAMPS.find(x=>x.id===id);
+  const idx=reminders.findIndex(r=>r.id===id);
+  if(idx>=0){
+    reminders.splice(idx,1);
+    document.getElementById('rem-btn-'+id).textContent='🔔 Remind me when registration opens';
+  }else{
+    reminders.push({id,name:c.name,org:c.org,regOpen:c.regOpen,scope:c.scope});
+    document.getElementById('rem-btn-'+id).textContent='✓ Reminder set — click to remove';
+  }
+  saveRem();updateRemCount();
+}
+
+function closeModal(e){if(e.target===document.getElementById('modal'))closeModalBtn();}
+function closeModalBtn(){document.getElementById('modal').classList.remove('open');}
+
+function renderCalendar(){
+  const periods=[
+    {name:'Nov–Dec 2025',items:CAMPS.filter(c=>c.regDate<'2026-01-01')},
+    {name:'Jan–Feb 2026',items:CAMPS.filter(c=>c.regDate>='2026-01-01'&&c.regDate<'2026-03-01')},
+    {name:'Mar–Apr 2026',items:CAMPS.filter(c=>c.regDate>='2026-03-01'&&c.regDate<'2026-05-01')},
+    {name:'Camp Season Jul–Aug 2026',items:[]},
+  ];
+  document.getElementById('cal-grid').innerHTML=periods.map(m=>`
+    <div class="cal-card">
+      <div class="cal-month">${m.name}</div>
+      ${m.items.length?m.items.map(c=>`
+        <div class="cal-item">
+          <div class="cal-dot cal-dot-${c.status}"></div>
+          <div><strong style="font-size:11px">${c.name}</strong><br>
+          <span class="${SCOPE_CLASS[c.scope]}" style="font-size:10px">${SCOPE_LABEL[c.scope]}</span>
+          <span style="color:#888;font-size:11px"> · ${c.regOpen}</span></div>
+        </div>`).join('')
+      :m.name.includes('Camp Season')?'<div style="font-size:12px;color:#555">Most camps run July 6 – August 28, 2026. Some Ontario overnight camps run June–August.</div>'
+      :'<div style="font-size:12px;color:#aaa">No registrations in this period.</div>'}
+    </div>`).join('');
+}
+
+const LOCATIONS=[
+  {name:"RIM Park",addr:"2001 University Ave E, Waterloo",camps:"City of Waterloo camps, Waterloo United Soccer",maps:"https://maps.google.com/?q=RIM+Park+Waterloo+ON"},
+  {name:"Waterloo Memorial Recreation Complex",addr:"101 Father David Bauer Dr, Waterloo",camps:"City of Waterloo Fun Centre",maps:"https://maps.google.com/?q=Waterloo+Memorial+Recreation+Complex"},
+  {name:"Wilfrid Laurier University",addr:"75 University Ave W, Waterloo",camps:"Laurier Athletics (basketball, swim, multi-sport)",maps:"https://maps.google.com/?q=Wilfrid+Laurier+University+Waterloo"},
+  {name:"University of Waterloo",addr:"200 University Ave W, Waterloo",camps:"UW Warriors Summer Camp",maps:"https://maps.google.com/?q=University+of+Waterloo"},
+  {name:"Ken Seiling Waterloo Region Museum",addr:"10 Huron Road, Kitchener",camps:"Curiosity Camp",maps:"https://maps.google.com/?q=Ken+Seiling+Waterloo+Region+Museum"},
+  {name:"THEMUSEUM",addr:"10 King St W, Kitchener",camps:"THEMUSEUM Day Camp, MakerSpace Camp",maps:"https://maps.google.com/?q=THEMUSEUM+Kitchener"},
+  {name:"YMCA Three Rivers",addr:"333 Carwood Ave, Kitchener / 250 Hespeler Rd, Cambridge",camps:"YMCA At the Y Day Camp",maps:"https://maps.google.com/?q=YMCA+Three+Rivers+Kitchener"},
+  {name:"STEM Camp Kitchener",addr:"35 Roos St / St. Matthews Lutheran Church, Kitchener",camps:"STEM Camp",maps:"https://maps.google.com/?q=35+Roos+St+Kitchener+ON"},
+  {name:"McDougall Cottage Historic Site",addr:"89 Grand Ave S, Cambridge",camps:"Waterloo Region Museums Maker Camps",maps:"https://maps.google.com/?q=McDougall+Cottage+Cambridge+ON"},
+  {name:"Township of Wilmot Recreation",addr:"1291 Nafziger Road, Baden, ON",camps:"Wilmot Day Camps",maps:"https://maps.google.com/?q=1291+Nafziger+Road+Baden+ON"},
+  {name:"Muskoka Woods",addr:"Lake Rosseau, Muskoka, ON",camps:"Muskoka Woods overnight camp",maps:"https://maps.google.com/?q=Muskoka+Woods+Lake+Rosseau+ON"},
+  {name:"Camp Muskoka",addr:"Bracebridge, Muskoka, ON",camps:"Camp Muskoka overnight & day",maps:"https://maps.google.com/?q=Camp+Muskoka+Bracebridge+ON"},
+  {name:"Camp Kandalore",addr:"Algonquin Highlands, ON",camps:"Camp Kandalore — canoe tripping",maps:"https://maps.google.com/?q=Camp+Kandalore+Algonquin+Highlands+ON"},
+  {name:"Canadian Adventure Camp",addr:"Private island, Temagami, ON",camps:"Canadian Adventure Camp",maps:"https://maps.google.com/?q=Temagami+Ontario"},
+  {name:"Art Gallery of Ontario",addr:"317 Dundas St W, Toronto, ON",camps:"AGO Art Camp",maps:"https://maps.google.com/?q=Art+Gallery+of+Ontario+Toronto"},
+  {name:"National Gallery of Canada",addr:"380 Sussex Dr, Ottawa, ON",camps:"National Gallery Art Adventure Camp",maps:"https://maps.google.com/?q=National+Gallery+of+Canada+Ottawa"},
+];
+
+function renderMap(){
+  document.getElementById('map-grid').innerHTML=LOCATIONS.map(l=>`
+    <div class="map-item">
+      <div class="map-item-name">${l.name}</div>
+      <div class="map-item-addr">${l.addr}</div>
+      <div class="map-item-camps">${l.camps}</div>
+      <a class="map-link" href="${l.maps}" target="_blank" style="font-size:11px;color:#1a5c96;text-decoration:none">Open in Maps ↗</a>
+    </div>`).join('');
+}
+
+function renderReminders(){
+  updateRemCount();
+  const list=document.getElementById('reminder-list');
+  if(!reminders.length){list.innerHTML='<div class="empty">No reminders set. Open any camp card and click "Remind me".</div>';return;}
+  list.innerHTML='<div class="reminder-list-wrap">'+reminders.map(r=>`
+    <div class="rem-item">
+      <button class="rem-remove" onclick="removeReminder(${r.id})">✕</button>
+      <div class="rem-item-name">${r.name}</div>
+      <div style="color:#666;font-size:11px;margin-top:1px">${r.org} · <span class="${SCOPE_CLASS[r.scope]}">${SCOPE_LABEL[r.scope]}</span></div>
+      <div style="color:#1a5c96;font-size:11px;margin-top:3px">📅 ${r.regOpen}</div>
+    </div>`).join('')+'</div>';
+}
+
+function removeReminder(id){
+  reminders=reminders.filter(r=>r.id!==id);
+  saveRem();updateRemCount();renderReminders();
+}
+
+updateRemCount();
+render();
+</script>
+</body>
+</html>
+
 <title>Canadian Summer Camps 2026</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
