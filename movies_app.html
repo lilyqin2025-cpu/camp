@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Landmark Cinemas Waterloo — Kids & Family</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0d0d1a;color:#f0f0f0;font-size:14px;min-height:100vh}
+.app{max-width:1100px;margin:0 auto;padding:16px}
+.header{background:linear-gradient(135deg,#1a1a3e,#2a1a4e);border-radius:14px;padding:18px 20px;margin-bottom:14px;border:0.5px solid #3a3a6e;position:relative;overflow:hidden}
+.header::before{content:'🎬';position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:60px;opacity:.15}
+h1{font-size:20px;font-weight:600;color:#fff}
+.sub{font-size:12px;color:#9090c0;margin-top:3px}
+.cinema-info{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:#a0a0d0}
+.cinema-info span{display:flex;align-items:center;gap:4px}
+.controls{background:#12122a;border-radius:10px;padding:12px 16px;margin-bottom:12px;border:0.5px solid #2a2a5a;display:flex;flex-direction:column;gap:8px}
+.ctrl-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ctrl-row label{font-size:12px;color:#8080b0;font-weight:500}
+select{background:#1a1a3a;border:0.5px solid #3a3a6a;border-radius:6px;padding:5px 8px;font-size:12px;color:#e0e0ff}
+input[type=text]{background:#1a1a3a;border:0.5px solid #3a3a6a;border-radius:6px;padding:6px 10px;font-size:13px;color:#e0e0ff;flex:1;min-width:180px}
+input[type=text]::placeholder{color:#5050a0}
+.fetch-btn{background:#6030c0;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;font-weight:500;display:flex;align-items:center;gap:6px}
+.fetch-btn:hover{background:#7040d0}
+.fetch-btn:disabled{background:#3a2a6a;cursor:not-allowed;opacity:.7}
+.status-bar{background:#12122a;border-radius:8px;padding:8px 14px;font-size:12px;color:#7070c0;margin-bottom:10px;border:0.5px solid #2a2a5a;display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:#4040a0;flex-shrink:0}
+.dot.live{background:#30c060;animation:pulse 2s infinite}
+.dot.loading{background:#f0a020;animation:pulse .6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.age-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.age-tab{padding:6px 14px;border-radius:20px;border:0.5px solid #3a3a6a;background:#12122a;cursor:pointer;font-size:12px;color:#8080c0;transition:all .15s}
+.age-tab.active{border-color:#6030c0;background:#2a1a5a;color:#c0a0ff}
+.section-title{font-size:12px;font-weight:600;color:#6060a0;text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px;padding-bottom:5px;border-bottom:0.5px solid #2a2a4a}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.movie-card{background:#12122a;border-radius:12px;border:0.5px solid #2a2a5a;overflow:hidden;transition:border-color .15s,transform .15s}
+.movie-card:hover{border-color:#5030a0;transform:translateY(-2px)}
+.movie-card.kids{border-left:3px solid #30c060}
+.movie-card.family{border-left:3px solid #3090f0}
+.movie-card.teen{border-left:3px solid #f0a020}
+.movie-card.adult{border-left:3px solid #e04040}
+.card-top{padding:14px 14px 10px;cursor:pointer}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px}
+.movie-title{font-size:14px;font-weight:600;color:#e0e0ff;line-height:1.3}
+.rating-badge{border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;flex-shrink:0}
+.r-g{background:#1a4a2a;color:#50e080}
+.r-pg{background:#1a3a5a;color:#50b0f0}
+.r-pg13{background:#4a3a1a;color:#f0c050}
+.r-14a{background:#4a2a1a;color:#f08030}
+.r-18a,.r-r{background:#4a1a1a;color:#f05050}
+.card-meta{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:7px}
+.tag{border-radius:4px;padding:2px 7px;font-size:11px}
+.tag-genre{background:#1e1e4e;color:#8080e0}
+.tag-fmt{background:#2a1a4e;color:#c080ff}
+.tag-imax{background:#1a3a1a;color:#50e080}
+.tag-3d{background:#1a2a4a;color:#50b0f0}
+.tag-laser{background:#3a1a1a;color:#f06050}
+.tag-premiere{background:#2a2a1a;color:#d0c050}
+.card-desc{font-size:12px;color:#7070a0;line-height:1.5;margin-bottom:8px}
+.card-rating{font-size:12px;color:#c0c0e0;margin-bottom:4px}
+.stars{color:#f0b030;font-size:13px}
+.showtimes-section{background:#0d0d20;padding:10px 14px;border-top:0.5px solid #2a2a4a}
+.showtime-group{margin-bottom:8px}
+.showtime-fmt{font-size:11px;color:#6060a0;margin-bottom:4px;font-weight:500}
+.times{display:flex;gap=5px;flex-wrap:wrap;gap:5px}
+.time-btn{background:#1e1e4e;border:0.5px solid #3a3a7a;border-radius:6px;padding:4px 10px;font-size:12px;color:#a0a0f0;cursor:pointer;text-decoration:none;display:inline-block;transition:background .1s}
+.time-btn:hover{background:#2e2e6e}
+.book-link{display:inline-block;margin-top:8px;font-size:11px;color:#8060e0;text-decoration:none}
+.book-link:hover{color:#c090ff}
+.age-guide{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.age-legend{display:flex;align-items:center;gap:5px;font-size:11px;color:#7070a0}
+.legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.empty{text-align:center;padding:40px;color:#5050a0;font-size:13px}
+.loading-anim{text-align:center;padding:30px;color:#7070b0}
+.spinner{display:inline-block;width:24px;height:24px;border:2px solid #3a3a7a;border-top-color:#8060f0;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ai-note{background:#1a1a2e;border:0.5px solid #3a3a6a;border-radius:8px;padding:10px 14px;font-size:12px;color:#8080b0;margin-bottom:12px;line-height:1.6}
+.no-kids-note{background:#1a2a1a;border:0.5px solid #305030;border-radius:8px;padding:10px 14px;font-size:12px;color:#70a070;margin-bottom:10px}
+.updated{font-size:11px;color:#5050a0}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="header">
+  <h1>🎬 Landmark Cinemas Waterloo</h1>
+  <div class="sub">415 The Boardwalk · Real-time showtimes · Kids & Family focus</div>
+  <div class="cinema-info">
+    <span>📍 Waterloo, ON N2T 0A6</span>
+    <span>📞 548-581-5113</span>
+    <span>🎭 10 screens · IMAX · 3D · Laser Ultra · Recliner seating</span>
+    <span>⚠️ Construction Apr 10–22 — cinema remains open</span>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="ctrl-row">
+    <input type="text" id="f-search" placeholder="🔍  Search movie title, genre, format…" oninput="filterMovies()">
+    <button class="fetch-btn" id="fetch-btn" onclick="fetchShowtimes()">
+      <span id="fetch-icon">🔄</span> <span id="fetch-label">Refresh Showtimes</span>
+    </button>
+  </div>
+  <div class="ctrl-row">
+    <label>Show</label>
+    <select id="f-age" onchange="filterMovies()">
+      <option value="kids">Kids & Family only (G, PG)</option>
+      <option value="all">All movies</option>
+      <option value="teen">Teens ok (G, PG, PG-13, 14A)</option>
+    </select>
+    <label>Format</label>
+    <select id="f-fmt" onchange="filterMovies()">
+      <option value="">Any format</option>
+      <option value="IMAX">IMAX</option>
+      <option value="3D">3D</option>
+      <option value="Laser">Laser Ultra</option>
+      <option value="Standard">Standard</option>
+    </select>
+    <label>Sort</label>
+    <select id="f-sort" onchange="filterMovies()">
+      <option value="kids">Kids-first</option>
+      <option value="rating">By rating score</option>
+      <option value="title">A–Z</option>
+    </select>
+  </div>
+</div>
+
+<div class="status-bar">
+  <div class="dot" id="status-dot"></div>
+  <span id="status-text">Click "Refresh Showtimes" to load live data from Landmark Cinemas Waterloo.</span>
+  <span class="updated" id="updated-time"></span>
+</div>
+
+<div class="age-guide">
+  <div class="age-legend"><div class="legend-dot" style="background:#30c060"></div> G — All ages</div>
+  <div class="age-legend"><div class="legend-dot" style="background:#3090f0"></div> PG — Parental guidance</div>
+  <div class="age-legend"><div class="legend-dot" style="background:#f0a020"></div> PG-13 — Teens+</div>
+  <div class="age-legend"><div class="legend-dot" style="background:#e07030"></div> 14A — 14+ (adult accomp.)</div>
+  <div class="age-legend"><div class="legend-dot" style="background:#e04040"></div> 18A/R — Adults only</div>
+</div>
+
+<div class="age-tabs">
+  <button class="age-tab active" onclick="setAgeTab('kids',this)">🧒 Kids & Family</button>
+  <button class="age-tab" onclick="setAgeTab('teen',this)">👦 Teens OK</button>
+  <button class="age-tab" onclick="setAgeTab('all',this)">🎭 All Movies</button>
+</div>
+
+<div id="movie-container">
+  <div class="ai-note">
+    ℹ️ This app uses AI to fetch and parse real showtimes from Landmark Cinemas Waterloo (CinemaClock). Showtimes update every Wednesday for the Fri–Thu week. Click <strong>Refresh Showtimes</strong> to get the latest listings — it takes about 10–15 seconds.
+  </div>
+  <div class="empty">🍿 Click "Refresh Showtimes" above to load what's playing today at Landmark Cinemas Waterloo!</div>
+</div>
+
+</div>
+
+<script>
+const RATING_ORDER = ['G','PG','PG-13','14A','18A','R','NR'];
+
+function getRatingClass(r){
+  const rr = r.toUpperCase();
+  if(rr==='G') return 'r-g';
+  if(rr==='PG') return 'r-pg';
+  if(rr==='PG-13') return 'r-pg13';
+  if(rr==='14A') return 'r-14a';
+  return 'r-18a';
+}
+
+function getKidClass(r){
+  const rr = r.toUpperCase();
+  if(rr==='G') return 'kids';
+  if(rr==='PG') return 'family';
+  if(rr==='PG-13'||rr==='14A') return 'teen';
+  return 'adult';
+}
+
+function isKidFriendly(r){
+  return ['G','PG'].includes(r.toUpperCase());
+}
+function isTeenOk(r){
+  return ['G','PG','PG-13','14A'].includes(r.toUpperCase());
+}
+
+function fmtTag(f){
+  if(/imax/i.test(f)) return '<span class="tag tag-imax">IMAX</span>';
+  if(/3d/i.test(f)) return '<span class="tag tag-3d">3D</span>';
+  if(/laser/i.test(f)) return '<span class="tag tag-laser">Laser Ultra</span>';
+  if(/premiere/i.test(f)) return '<span class="tag tag-premiere">Premiere</span>';
+  return '<span class="tag tag-fmt">Standard</span>';
+}
+
+function stars(score){
+  if(!score) return '';
+  const s = parseFloat(score);
+  const filled = Math.round(s/2);
+  return '⭐'.repeat(filled) + '☆'.repeat(5-filled);
+}
+
+let allMovies = [];
+let currentTab = 'kids';
+
+function setAgeTab(tab, btn){
+  currentTab = tab;
+  document.getElementById('f-age').value = tab;
+  document.querySelectorAll('.age-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  filterMovies();
+}
+
+function filterMovies(){
+  const q = document.getElementById('f-search').value.toLowerCase();
+  const age = document.getElementById('f-age').value || currentTab;
+  const fmt = document.getElementById('f-fmt').value.toLowerCase();
+  const sort = document.getElementById('f-sort').value;
+
+  let movies = allMovies.filter(m => {
+    const ageOk = age==='all' ? true : age==='kids' ? isKidFriendly(m.rating) : isTeenOk(m.rating);
+    const qOk = !q || m.title.toLowerCase().includes(q) || (m.genre||'').toLowerCase().includes(q) || m.formats.some(f=>f.toLowerCase().includes(q));
+    const fmtOk = !fmt || m.formats.some(f=>f.toLowerCase().includes(fmt));
+    return ageOk && qOk && fmtOk;
+  });
+
+  if(sort==='rating') movies.sort((a,b)=>(parseFloat(b.score)||0)-(parseFloat(a.score)||0));
+  else if(sort==='title') movies.sort((a,b)=>a.title.localeCompare(b.title));
+  else movies.sort((a,b)=>{
+    const ka=isKidFriendly(a.rating)?0:isTeenOk(a.rating)?1:2;
+    const kb=isKidFriendly(b.rating)?0:isTeenOk(b.rating)?1:2;
+    return ka-kb || (parseFloat(b.score)||0)-(parseFloat(a.score)||0);
+  });
+
+  renderMovies(movies, age);
+}
+
+function renderMovies(movies, ageFilter){
+  const c = document.getElementById('movie-container');
+  if(!movies.length){
+    c.innerHTML = `<div class="empty">No movies match your filters. Try "All Movies" or clear the search.</div>`;
+    return;
+  }
+
+  const kids = movies.filter(m=>isKidFriendly(m.rating));
+  const teens = movies.filter(m=>isTeenOk(m.rating)&&!isKidFriendly(m.rating));
+  const adults = movies.filter(m=>!isTeenOk(m.rating));
+
+  let html = '';
+
+  if(kids.length && ageFilter!=='all'){
+    html += `<div class="section-title">🟢 Kids & Family (G / PG) — ${kids.length} film${kids.length>1?'s':''}</div>`;
+    html += `<div class="grid">${kids.map(movieCard).join('')}</div>`;
+  }
+  if(teens.length && (ageFilter==='teen'||ageFilter==='all')){
+    html += `<div class="section-title">🟡 Teens OK (PG-13 / 14A) — ${teens.length} film${teens.length>1?'s':''}</div>`;
+    html += `<div class="grid">${teens.map(movieCard).join('')}</div>`;
+  }
+  if(adults.length && ageFilter==='all'){
+    html += `<div class="section-title">🔴 Adults Only (18A / R) — ${adults.length} film${adults.length>1?'s':''}</div>`;
+    html += `<div class="grid">${adults.map(movieCard).join('')}</div>`;
+  }
+  if(ageFilter==='kids' && !kids.length){
+    html += `<div class="no-kids-note">🎥 No G or PG rated films currently showing at Landmark Waterloo. Check back Wednesday when new showtimes are posted — or switch to "Teens OK" to see more options.</div>`;
+    html += `<div class="section-title">Other films currently showing</div>`;
+    html += `<div class="grid">${movies.map(movieCard).join('')}</div>`;
+  }
+  if(ageFilter==='all' && kids.length){
+    html = `<div class="section-title">🟢 Kids & Family (G / PG)</div><div class="grid">${kids.map(movieCard).join('')}</div>`;
+    if(teens.length) html += `<div class="section-title">🟡 Teens OK (PG-13 / 14A)</div><div class="grid">${teens.map(movieCard).join('')}</div>`;
+    if(adults.length) html += `<div class="section-title">🔴 Adults Only (18A / R)</div><div class="grid">${adults.map(movieCard).join('')}</div>`;
+  }
+
+  c.innerHTML = html;
+}
+
+function movieCard(m){
+  const kidCls = getKidClass(m.rating);
+  const ratingCls = getRatingClass(m.rating);
+  const fmtTags = m.formats.map(fmtTag).join('');
+  const scoreHTML = m.score ? `<div class="card-rating"><span class="stars">${stars(m.score)}</span> <span style="color:#9090c0">${m.score}/10</span></div>` : '';
+
+  const showtimeGroups = (m.showtimes||[]).map(st=>`
+    <div class="showtime-group">
+      <div class="showtime-fmt">${st.format}</div>
+      <div class="times">${st.times.map(t=>`<a class="time-btn" href="https://www.landmarkcinemas.com/showtimes/waterloo" target="_blank">${t}</a>`).join('')}</div>
+    </div>`).join('');
+
+  return `<div class="movie-card ${kidCls}">
+    <div class="card-top">
+      <div class="card-header">
+        <div class="movie-title">${m.title}</div>
+        <span class="rating-badge ${ratingCls}">${m.rating}</span>
+      </div>
+      <div class="card-meta">
+        ${fmtTags}
+        ${m.genre?`<span class="tag tag-genre">${m.genre}</span>`:''}
+        ${m.duration?`<span class="tag tag-genre">${m.duration}</span>`:''}
+      </div>
+      ${scoreHTML}
+      <div class="card-desc">${m.description||''}</div>
+    </div>
+    ${showtimeGroups?`<div class="showtimes-section">${showtimeGroups}<a class="book-link" href="https://www.landmarkcinemas.com/showtimes/waterloo" target="_blank">🎟️ Book at Landmark Cinemas ↗</a></div>`:''}
+  </div>`;
+}
+
+async function fetchShowtimes(){
+  const btn = document.getElementById('fetch-btn');
+  const dot = document.getElementById('status-dot');
+  const statusText = document.getElementById('status-text');
+  const icon = document.getElementById('fetch-icon');
+  const label = document.getElementById('fetch-label');
+
+  btn.disabled = true;
+  icon.textContent = '⏳';
+  label.textContent = 'Fetching…';
+  dot.className = 'dot loading';
+  statusText.textContent = 'Asking AI to fetch live showtimes from Landmark Cinemas Waterloo…';
+  document.getElementById('movie-container').innerHTML = `<div class="loading-anim"><div class="spinner"></div><div>Fetching real-time showtimes — please wait 10–15 seconds…</div></div>`;
+
+  const today = new Date().toLocaleDateString('en-CA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+  const prompt = `Today is ${today}. Fetch the current showtimes at Landmark Cinemas Waterloo (415 The Boardwalk, Waterloo ON) from https://www.cinemaclock.com/movie-theaters/landmark-10-waterloo or https://www.landmarkcinemas.com/showtimes/waterloo
+
+Return ONLY a valid JSON array (no markdown, no explanation, no backticks) with this exact structure for each movie currently showing:
+[
+  {
+    "title": "Movie Title",
+    "rating": "G|PG|PG-13|14A|18A|R",
+    "genre": "Animation|Comedy|etc",
+    "duration": "1h30m",
+    "score": "7.5",
+    "description": "One sentence description",
+    "formats": ["Standard","IMAX","3D","Laser Ultra"],
+    "showtimes": [
+      {"format": "IMAX", "times": ["11:30am","3:10pm","6:30pm"]},
+      {"format": "Standard", "times": ["12:30pm","3:40pm"]}
+    ]
+  }
+]
+
+Include ALL movies currently showing. Use real Canadian ratings (G, PG, PG-13, 14A, 18A). For formats, only include formats actually showing at this cinema. Today's actual showtimes only. Return raw JSON only.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 4000,
+        tools: [{type:'web_search_20250305',name:'web_search'}],
+        messages: [{role:'user',content:prompt}]
+      })
+    });
+
+    const data = await res.json();
+
+    // Extract text from all content blocks
+    let rawText = '';
+    if(data.content){
+      for(const block of data.content){
+        if(block.type==='text') rawText += block.text;
+      }
+    }
+
+    // Parse JSON from response
+    let movies = [];
+    const jsonMatch = rawText.match(/\[[\s\S]*\]/);
+    if(jsonMatch){
+      try{ movies = JSON.parse(jsonMatch[0]); }
+      catch(e){ throw new Error('Could not parse movie data: '+e.message); }
+    } else {
+      throw new Error('No movie data found in response');
+    }
+
+    if(!movies.length) throw new Error('No movies returned');
+
+    allMovies = movies;
+    dot.className = 'dot live';
+    statusText.textContent = `✓ Live data loaded — ${movies.length} films now showing at Landmark Waterloo`;
+    document.getElementById('updated-time').textContent = 'Updated: '+new Date().toLocaleTimeString();
+    icon.textContent = '✓';
+    label.textContent = 'Refresh Showtimes';
+    btn.disabled = false;
+    filterMovies();
+
+  } catch(err){
+    dot.className = 'dot';
+    dot.style.background = '#e04040';
+    statusText.textContent = '⚠ Could not load live data. Showing cached data. Error: '+err.message;
+    btn.disabled = false;
+    icon.textContent = '🔄';
+    label.textContent = 'Retry';
+    // Show cached data
+    loadCachedData();
+  }
+}
+
+function loadCachedData(){
+  // Cached from April 10 2026 fetch of cinemaclock
+  allMovies = [
+    {title:"Super Mario Galaxy Movie",rating:"G",genre:"Animation",duration:"~1h40m",score:"8.0",description:"Mario and Luigi blast off on a galaxy-spanning adventure to save Princess Peach from Bowser's cosmic fortress.",formats:["Standard","IMAX","3D"],showtimes:[{format:"IMAX",times:["11:00am","1:30pm","4:00pm","6:30pm"]},{format:"3D",times:["12:00pm","2:30pm","5:00pm","7:30pm"]},{format:"Standard",times:["10:30am","1:00pm","3:30pm","6:00pm"]}]},
+    {title:"GOAT",rating:"PG",genre:"Animation",duration:"1h40m",score:"7.1",description:"An animated adventure following an unlikely hero navigating big challenges with heart and humour.",formats:["Standard"],showtimes:[{format:"Standard",times:["1:00pm","4:10pm"]}]},
+    {title:"Hoppers",rating:"PG",genre:"Animation",duration:"1h35m",score:"7.4",description:"A charming animated film about a group of young adventurers on a magical journey.",formats:["Standard","3D"],showtimes:[{format:"3D",times:["2:50pm"]},{format:"Standard",times:["11:40am","3:50pm","6:20pm"]}]},
+    {title:"Project Hail Mary",rating:"PG-13",genre:"Sci-fi",duration:"2h36m",score:"7.8",description:"An astronaut wakes alone in space with no memory — and discovers Earth's fate rests in his hands.",formats:["IMAX","Standard","Laser Ultra"],showtimes:[{format:"IMAX",times:["11:30am","3:10pm","6:30pm","10:00pm"]},{format:"Laser Ultra",times:["12:20pm","3:40pm","7:00pm"]},{format:"Standard",times:["12:30pm","2:40pm","6:00pm"]}]},
+    {title:"Reminders of Him",rating:"PG-13",genre:"Romantic drama",duration:"1h54m",score:"7.8",description:"A young mother tries to rebuild her life and reconnect with her daughter after serving time in prison.",formats:["Standard"],showtimes:[{format:"Standard",times:["12:00pm","4:00pm","6:50pm","9:10pm"]}]},
+    {title:"Peaky Blinders: The Immortal Man",rating:"14A",genre:"Crime drama",duration:"2h10m",score:"6.9",description:"Tommy Shelby returns in this cinematic conclusion to the legendary Peaky Blinders saga.",formats:["Standard"],showtimes:[{format:"Standard",times:["10:25pm"]}]},
+    {title:"Scream 7",rating:"14A",genre:"Horror",duration:"1h54m",score:"7.6",description:"Sidney Prescott faces a new Ghostface killer in this legacy-sequel to the iconic franchise.",formats:["Standard"],showtimes:[{format:"Standard",times:["7:10pm"]}]},
+    {title:"Ready or Not 2: Here I Come",rating:"18A",genre:"Horror/comedy",duration:"1h48m",score:"5.2",description:"Grace returns to face another deadly game of hide-and-seek with a murderous family.",formats:["Standard"],showtimes:[{format:"Standard",times:["5:30pm","8:05pm","10:40pm"]}]},
+  ];
+  document.getElementById('status-dot').className='dot';
+  document.getElementById('status-dot').style.background='#f0a020';
+  document.getElementById('status-text').textContent='⚠ Using cached data (Apr 10 2026). Click Refresh Showtimes for live data.';
+  filterMovies();
+}
+
+// Load cached data on start
+loadCachedData();
+</script>
+</body>
+</html>
