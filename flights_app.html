@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YYZ Direct Flights to China & Hong Kong</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0a0f1e;color:#e8eaf6;font-size:14px;min-height:100vh}
+.app{max-width:1100px;margin:0 auto;padding:16px}
+.header{background:linear-gradient(135deg,#0d1b3e,#1a2a5e);border-radius:14px;padding:18px 22px;margin-bottom:14px;border:0.5px solid #2a3a7e;position:relative;overflow:hidden}
+.header::after{content:"✈";position:absolute;right:24px;top:50%;transform:translateY(-50%);font-size:72px;opacity:.08}
+h1{font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
+.sub{font-size:12px;color:#7080b0}
+.route-info{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.route-pill{background:rgba(255,255,255,.08);border:0.5px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;font-size:11px;color:#a0b0e0;display:flex;align-items:center;gap:5px}
+.controls{background:#0f1628;border-radius:10px;padding:12px 16px;margin-bottom:12px;border:0.5px solid #1e2a4e;display:flex;flex-direction:column;gap:8px}
+.ctrl-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ctrl-row label{font-size:12px;color:#6070a0;font-weight:500}
+select,input[type=text],input[type=date]{background:#141c38;border:0.5px solid #2a3a6a;border-radius:6px;padding:5px 9px;font-size:12px;color:#c0d0f0}
+input[type=text]{flex:1;min-width:160px;padding:7px 11px;font-size:13px}
+.fetch-btn{background:#3050c0;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:13px;cursor:pointer;font-weight:500;white-space:nowrap}
+.fetch-btn:hover{background:#4060d0}
+.fetch-btn:disabled{background:#1a2560;opacity:.6;cursor:not-allowed}
+.status{background:#0f1628;border-radius:8px;padding:8px 14px;font-size:12px;color:#5060a0;margin-bottom:10px;border:0.5px solid #1e2a4e;display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:#2a3080;flex-shrink:0}
+.dot.live{background:#20c060;animation:pulse 2s infinite}
+.dot.loading{background:#f0a020;animation:pulse .6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.dest-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.dtab{padding:6px 14px;border-radius:20px;border:0.5px solid #2a3a6a;background:#0f1628;cursor:pointer;font-size:12px;color:#6080c0}
+.dtab.active{background:#1a3080;color:#80b0ff;border-color:#3050c0}
+.route-card{background:#0f1628;border-radius:12px;border:0.5px solid #1e2a4e;margin-bottom:12px;overflow:hidden}
+.route-header{padding:14px 16px 12px;border-bottom:0.5px solid #1a2440;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;cursor:pointer}
+.route-header:hover{background:rgba(255,255,255,.02)}
+.route-title{display:flex;align-items:center;gap:12px}
+.airport-code{font-size:22px;font-weight:700;color:#80b0ff}
+.arrow{color:#3050c0;font-size:18px}
+.route-name{font-size:13px;font-weight:600;color:#c0d0ff}
+.route-sub{font-size:11px;color:#5060a0;margin-top:2px}
+.route-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tag{border-radius:5px;padding:3px 8px;font-size:11px;font-weight:500}
+.tag-airline{background:#1a2a5e;color:#6090e0}
+.tag-freq{background:#1a3a2e;color:#40c080}
+.tag-time{background:#2a2a1e;color:#c0a040}
+.tag-price{background:#2a1e1e;color:#e07060}
+.tag-class{background:#2a1a3e;color:#a060e0}
+.route-body{padding:14px 16px}
+.flight-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:14px}
+.flight-card{background:#141c38;border-radius:9px;padding:12px;border:0.5px solid #2a3a6e}
+.fc-airline{font-size:12px;font-weight:600;color:#80b0ff;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.fc-num{font-size:11px;color:#5060a0}
+.fc-times{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.fc-dep,.fc-arr{text-align:center}
+.fc-time{font-size:16px;font-weight:700;color:#e0e8ff}
+.fc-ap{font-size:10px;color:#5060a0}
+.fc-dur{font-size:10px;color:#5060a0;text-align:center;flex:1}
+.fc-dur-line{height:1px;background:#2a3a6e;margin-bottom:3px}
+.fc-days{font-size:10px;color:#6070a0;margin-bottom:6px}
+.fc-tags{display:flex;gap:4px;flex-wrap:wrap}
+.price-section{background:#141c38;border-radius:9px;padding:12px 14px;margin-bottom:12px;border:0.5px solid #2a3a6e}
+.price-title{font-size:11px;font-weight:600;color:#6070a0;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.price-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:12px}
+.price-label{color:#7080a0}
+.price-val{font-weight:600;color:#e0e8ff}
+.price-note{font-size:11px;color:#4050a0;margin-top:6px;line-height:1.5}
+.tip-box{background:#0d1a30;border-radius:8px;padding:10px 14px;border-left:3px solid #3050c0;margin-bottom:10px}
+.tip-title{font-size:11px;font-weight:600;color:#5080c0;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
+.tip-text{font-size:12px;color:#6080a0;line-height:1.6}
+.book-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.book-btn{padding:6px 14px;border-radius:7px;font-size:12px;text-decoration:none;font-weight:500;cursor:pointer;border:none}
+.btn-google{background:#1a56e8;color:#fff}
+.btn-kayak{background:#f06020;color:#fff}
+.btn-airline{background:#1a3a6e;color:#80b0ff;border:0.5px solid #2a4a8e}
+.section-div{font-size:11px;font-weight:600;color:#4050a0;text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px;padding-bottom:5px;border-bottom:0.5px solid #1a2440}
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid #1a2a6e;border-top-color:#4060d0;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ai-badge{background:#1a3060;border-radius:6px;padding:2px 8px;font-size:10px;color:#5080c0;font-weight:600}
+.empty{text-align:center;padding:40px;color:#3040a0}
+.visa-box{background:#1a2010;border:0.5px solid #2a4020;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:12px;color:#70a050;line-height:1.6}
+.collapse-btn{font-size:18px;color:#3050a0;background:none;border:none;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="header">
+  <h1>✈ YYZ → China & Hong Kong</h1>
+  <div class="sub">Non-stop round-trip flights · 2 weeks+ · Toronto Pearson International</div>
+  <div class="route-info">
+    <div class="route-pill">📍 Terminal 1 & 3 — Toronto Pearson (YYZ)</div>
+    <div class="route-pill">🇨🇳 Beijing · Shanghai · Guangzhou</div>
+    <div class="route-pill">🇭🇰 Hong Kong</div>
+    <div class="route-pill">🔄 Round-trip · 14+ days</div>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="ctrl-row">
+    <label>Depart from</label>
+    <input type="date" id="f-depart" style="width:140px">
+    <label>Min stay</label>
+    <select id="f-stay">
+      <option value="14">14 days</option>
+      <option value="21">21 days</option>
+      <option value="28">28 days</option>
+      <option value="any">Any (14+)</option>
+    </select>
+    <label>Cabin</label>
+    <select id="f-cabin">
+      <option value="">Any cabin</option>
+      <option value="economy">Economy</option>
+      <option value="premium">Premium Economy</option>
+      <option value="business">Business</option>
+      <option value="first">First Class</option>
+    </select>
+    <label>Dest</label>
+    <select id="f-dest" onchange="filterRoutes()">
+      <option value="all">All destinations</option>
+      <option value="HKG">Hong Kong (HKG)</option>
+      <option value="PEK">Beijing (PEK)</option>
+      <option value="PVG">Shanghai (PVG)</option>
+      <option value="CAN">Guangzhou (CAN)</option>
+    </select>
+    <button class="fetch-btn" id="fetch-btn" onclick="fetchPrices()">🔄 Check Live Prices</button>
+  </div>
+</div>
+
+<div class="status" id="status-bar">
+  <div class="dot" id="sdot"></div>
+  <span id="stext">Route data loaded. Click "Check Live Prices" to fetch today's fares from Google Flights / KAYAK.</span>
+  <span style="font-size:11px;color:#3040a0;margin-left:auto" id="sup"></span>
+</div>
+
+<div class="dest-tabs">
+  <button class="dtab active" onclick="setDest('all',this)">🌏 All routes</button>
+  <button class="dtab" onclick="setDest('HKG',this)">🇭🇰 Hong Kong</button>
+  <button class="dtab" onclick="setDest('PEK',this)">🇨🇳 Beijing</button>
+  <button class="dtab" onclick="setDest('PVG',this)">🇨🇳 Shanghai</button>
+  <button class="dtab" onclick="setDest('CAN',this)">🇨🇳 Guangzhou</button>
+</div>
+
+<div id="routes-container"></div>
+
+</div>
+
+<script>
+var ROUTES = [
+  {
+    id:"HKG",
+    dest:"Hong Kong",
+    destCN:"香港",
+    airport:"HKG",
+    fullName:"Hong Kong International Airport",
+    country:"Hong Kong SAR",
+    flag:"🇭🇰",
+    flightTime:"~15h 25min",
+    distance:"12,542 km",
+    open:true,
+    airlines:[
+      {name:"Cathay Pacific",code:"CX",iata:"CX",flights:["CX828","CX826","CX824"],freq:"Daily (up to 3x/day)",depTimes:["00:35","10:15","15:45"],arrTimes:["05:15 +1","14:50 +1","19:10 +1"],days:"Mon Tue Wed Thu Fri Sat Sun",aircraft:"Airbus A350-900",classes:["Economy","Premium Economy","Business"],terminal:"T3 (YYZ) → T1 (HKG)",notes:"Only non-stop option YYZ↔HKG. 18 flights/week outbound, 4 flights/week inbound. Code-shared with American Airlines, British Airways."}
+    ],
+    prices:{economy:{low:"CA$464",mid:"CA$900",high:"CA$1,400",cheapMonth:"January"},premEcon:{low:"CA$1,200",mid:"CA$1,800"},business:{low:"CA$3,200",mid:"CA$5,500"}},
+    tips:["Cheapest months: Jan, Feb, Nov","Book 6–8 weeks in advance for best fares","Cathay Pacific has great Business Class on the A350","Airport Express train from HKG to city in 24 min"],
+    bookLinks:[
+      {label:"Google Flights",url:"https://www.google.com/travel/flights?q=flights+from+YYZ+to+HKG+round+trip",cls:"btn-google"},
+      {label:"KAYAK",url:"https://www.kayak.ca/flights/YYZ-HKG",cls:"btn-kayak"},
+      {label:"Cathay Pacific",url:"https://www.cathaypacific.com/cx/en_CA.html",cls:"btn-airline"}
+    ],
+    visa:"🛂 Canadians: No visa required for Hong Kong stays up to 90 days."
+  },
+  {
+    id:"PEK",
+    dest:"Beijing",
+    destCN:"北京",
+    airport:"PEK",
+    fullName:"Beijing Capital International Airport",
+    country:"China (Mainland)",
+    flag:"🇨🇳",
+    flightTime:"~14h 00min",
+    distance:"10,554 km",
+    open:true,
+    airlines:[
+      {name:"Air China",code:"CA",iata:"CA",flights:["CA837","CA841"],freq:"3× per week",depTimes:["15:10","16:30"],arrTimes:["18:15 +1","19:10 +1"],days:"Tue Thu Sat (varies seasonally)",aircraft:"Boeing 787-9 Dreamliner",classes:["Economy","Business","First"],terminal:"T1/T3 (YYZ) → T3 (PEK)",notes:"Star Alliance. Frequent flyer: Air Canada Aeroplan points accepted. First Class available."},
+      {name:"Hainan Airlines",code:"HU",iata:"HU",flights:["HU7966"],freq:"1× per week (Sunday)",depTimes:["17:20"],arrTimes:["18:40 +1"],days:"Sunday",aircraft:"Boeing 787-9 Dreamliner",classes:["Economy","Business"],terminal:"T1 (YYZ) → T2 (PEK)",notes:"Resumed service after long hiatus. Only Chinese carrier with direct YYZ–PEK. Good value business class."}
+    ],
+    prices:{economy:{low:"CA$627",mid:"CA$1,100",high:"CA$1,800",cheapMonth:"November"},business:{low:"CA$2,800",mid:"CA$4,500"}},
+    tips:["Cheapest months: Nov, Dec, Jan","Air China Tue/Thu/Sat has most schedule options","Allow extra time at Beijing immigration","Visa Letter of Invitation needed (see below)"],
+    bookLinks:[
+      {label:"Google Flights",url:"https://www.google.com/travel/flights?q=flights+from+YYZ+to+PEK+round+trip",cls:"btn-google"},
+      {label:"KAYAK",url:"https://www.kayak.ca/flights/YYZ-PEK",cls:"btn-kayak"},
+      {label:"Air China",url:"https://www.airchina.ca",cls:"btn-airline"},
+      {label:"Hainan Airlines",url:"https://www.hainanairlines.com",cls:"btn-airline"}
+    ],
+    visa:"🛂 Canadians: Visa required for mainland China. Apply at Chinese consulate. Visa-free transit (up to 144h) available at PEK if connecting onward. Apply well in advance for tourist visa."
+  },
+  {
+    id:"PVG",
+    dest:"Shanghai",
+    destCN:"上海",
+    airport:"PVG",
+    fullName:"Shanghai Pudong International Airport",
+    country:"China (Mainland)",
+    flag:"🇨🇳",
+    flightTime:"~14h 30min",
+    distance:"11,800 km",
+    open:true,
+    airlines:[
+      {name:"Air Canada",code:"AC",iata:"AC",flights:["AC031","AC033"],freq:"Up to daily (seasonal)",depTimes:["01:05","01:30"],arrTimes:["05:00 +1","05:25 +1"],days:"Check schedule — varies seasonally",aircraft:"Boeing 787-9 Dreamliner",classes:["Economy","Premium Economy","Business"],terminal:"T1 (YYZ) → T2 (PVG)",notes:"Star Alliance. Earn Aeroplan miles. Business class includes flat-bed seats. Strong option for Aeroplan members."},
+      {name:"China Eastern",code:"MU",iata:"MU",flights:["MU581","MU583"],freq:"4× per week",depTimes:["23:55","00:30"],arrTimes:["05:00 +1","05:30 +1"],days:"Mon Wed Fri Sun",aircraft:"Airbus A330-300",classes:["Economy","Business"],terminal:"T3 (YYZ) → T1 (PVG)",notes:"SkyTeam alliance. Good for China domestic connections out of Shanghai. Competitive economy fares."}
+    ],
+    prices:{economy:{low:"CA$745",mid:"CA$1,200",high:"CA$1,900",cheapMonth:"November"},premEcon:{low:"CA$1,500",mid:"CA$2,200"},business:{low:"CA$3,000",mid:"CA$5,000"}},
+    tips:["Air Canada often cheaper when on sale","China Eastern has excellent Shanghai connections","Maglev train from PVG to city in 8 min","Book early for summer travel — very popular route"],
+    bookLinks:[
+      {label:"Google Flights",url:"https://www.google.com/travel/flights?q=flights+from+YYZ+to+PVG+round+trip",cls:"btn-google"},
+      {label:"KAYAK",url:"https://www.kayak.ca/flights/YYZ-PVG",cls:"btn-kayak"},
+      {label:"Air Canada",url:"https://www.aircanada.com",cls:"btn-airline"},
+      {label:"China Eastern",url:"https://www.ceair.com",cls:"btn-airline"}
+    ],
+    visa:"🛂 Canadians: Visa required for mainland China. Shanghai offers 144-hour visa-free transit if connecting to a third country."
+  },
+  {
+    id:"CAN",
+    dest:"Guangzhou",
+    destCN:"广州",
+    airport:"CAN",
+    fullName:"Guangzhou Baiyun International Airport",
+    country:"China (Mainland)",
+    flag:"🇨🇳",
+    flightTime:"~15h 30min",
+    distance:"12,434 km",
+    open:true,
+    airlines:[
+      {name:"China Southern",code:"CZ",iata:"CZ",flights:["CZ328","CZ330"],freq:"4× per week",depTimes:["00:30","01:30"],arrTimes:["05:20 +1","05:00 +1"],days:"Mon Wed Fri Sat",aircraft:"Airbus A330-300 / Boeing 787",classes:["Economy","Premium Economy","Business"],terminal:"T1 (YYZ) → T2 (CAN)",notes:"Only non-stop option YYZ↔CAN. SkyTeam alliance. Great hub for connections to Shenzhen, Zhuhai, and all of southern China. Comfortable wide-body aircraft."}
+    ],
+    prices:{economy:{low:"CA$1,570",mid:"CA$2,000",high:"CA$2,800",cheapMonth:"January"},premEcon:{low:"CA$2,200",mid:"CA$3,000"},business:{low:"CA$4,000",mid:"CA$6,000"}},
+    tips:["China Southern often pricier — compare with 1-stop via HK","Best gateway to Guangdong, Shenzhen, Zhuhai","High-speed train from CAN to HK takes ~50 min","Guangzhou hub for connections across southern China"],
+    bookLinks:[
+      {label:"Google Flights",url:"https://www.google.com/travel/flights?q=flights+from+YYZ+to+CAN+round+trip",cls:"btn-google"},
+      {label:"KAYAK",url:"https://www.kayak.ca/flights/YYZ-CAN",cls:"btn-kayak"},
+      {label:"China Southern",url:"https://www.csair.com/ca",cls:"btn-airline"}
+    ],
+    visa:"🛂 Canadians: Visa required for mainland China. Guangzhou offers 144-hour visa-free transit. Apply well in advance for tourist/family visit visa."
+  }
+];
+
+var currentDest = "all";
+var livePrices = {};
+
+function setDest(d, btn){
+  currentDest = d;
+  document.querySelectorAll(".dtab").forEach(function(b){b.classList.remove("active")});
+  btn.classList.add("active");
+  document.getElementById("f-dest").value = d;
+  renderRoutes();
+}
+
+function filterRoutes(){
+  currentDest = document.getElementById("f-dest").value;
+  document.querySelectorAll(".dtab").forEach(function(b,i){
+    b.classList.toggle("active", ["all","HKG","PEK","PVG","CAN"][i] === currentDest);
+  });
+  renderRoutes();
+}
+
+function renderRoutes(){
+  var cabin = document.getElementById("f-cabin").value;
+  var dest = currentDest;
+  var routes = dest === "all" ? ROUTES : ROUTES.filter(function(r){return r.id === dest});
+  if(!routes.length){
+    document.getElementById("routes-container").innerHTML = '<div class="empty">No routes match your filters.</div>';
+    return;
+  }
+  document.getElementById("routes-container").innerHTML = routes.map(function(r){return routeCard(r, cabin, livePrices[r.id])}).join("");
+}
+
+function routeCard(r, cabin, live){
+  var priceInfo = "";
+  if(live){
+    priceInfo = '<div class="price-section"><div class="price-title">💰 Live Prices — Round Trip (14+ days) <span class="ai-badge">AI FETCHED</span></div>' + live + '</div>';
+  } else {
+    var p = r.prices;
+    var rows = "";
+    if(!cabin || cabin === "economy") rows += '<div class="price-row"><div class="price-label">Economy (low season)</div><div class="price-val">' + p.economy.low + '</div></div><div class="price-row"><div class="price-label">Economy (peak)</div><div class="price-val">' + p.economy.high + '</div></div>';
+    if(p.premEcon && (!cabin || cabin === "premium")) rows += '<div class="price-row"><div class="price-label">Premium Economy</div><div class="price-val">' + p.premEcon.low + ' – ' + p.premEcon.mid + '</div></div>';
+    if(!cabin || cabin === "business") rows += '<div class="price-row"><div class="price-label">Business Class</div><div class="price-val">' + p.business.low + ' – ' + p.business.mid + '</div></div>';
+    if(r.prices.economy.first) rows += '<div class="price-row"><div class="price-label">First Class</div><div class="price-val">' + r.prices.first.low + '</div></div>';
+    priceInfo = '<div class="price-section"><div class="price-title">💰 Typical Prices — Round Trip (14+ days) <span class="ai-badge">HISTORICAL</span></div>' + rows + '<div class="price-note">📅 Cheapest month: ' + p.economy.cheapMonth + ' · Click "Check Live Prices" for today\'s actual fares · Prices in CAD incl. taxes</div></div>';
+  }
+
+  var flightCards = r.airlines.map(function(a){
+    return '<div class="flight-card">' +
+      '<div class="fc-airline">' + a.name + ' <span class="fc-num">' + a.flights.join(" / ") + '</span></div>' +
+      a.depTimes.map(function(dep, i){
+        return '<div class="fc-times"><div class="fc-dep"><div class="fc-time">' + dep + '</div><div class="fc-ap">YYZ</div></div>' +
+          '<div class="fc-dur"><div class="fc-dur-line"></div><div>' + r.flightTime + '</div></div>' +
+          '<div class="fc-arr"><div class="fc-time">' + (a.arrTimes[i]||"—") + '</div><div class="fc-ap">' + r.airport + '</div></div></div>';
+      }).join("") +
+      '<div class="fc-days">🗓 ' + a.days + '</div>' +
+      '<div class="fc-tags">' +
+        '<span class="tag tag-airline">' + a.aircraft + '</span>' +
+        a.classes.map(function(c){return '<span class="tag tag-class">' + c + '</span>'}).join("") +
+      '</div>' +
+      '<div style="font-size:11px;color:#4050a0;margin-top:7px;line-height:1.5">' + a.notes + '</div>' +
+    '</div>';
+  }).join("");
+
+  var tips = r.tips.map(function(t){return "• " + t}).join("<br>");
+  var bookBtns = r.bookLinks.map(function(l){return '<a class="book-btn ' + l.cls + '" href="' + l.url + '" target="_blank">' + l.label + ' ↗</a>'}).join("");
+
+  return '<div class="route-card">' +
+    '<div class="route-header" onclick="toggleCard(\'' + r.id + '\')">' +
+      '<div class="route-title">' +
+        '<div>' +
+          '<div style="display:flex;align-items:center;gap:8px">' +
+            '<span class="airport-code">YYZ</span>' +
+            '<span class="arrow">⟶</span>' +
+            '<span class="airport-code">' + r.airport + '</span>' +
+            '<span style="font-size:22px">' + r.flag + '</span>' +
+          '</div>' +
+          '<div class="route-name">' + r.dest + ' ' + r.destCN + ' — ' + r.fullName + '</div>' +
+          '<div class="route-sub">' + r.flightTime + ' · ' + r.distance + ' · ' + r.country + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="route-meta">' +
+        r.airlines.map(function(a){return '<span class="tag tag-airline">' + a.name + '</span>'}).join("") +
+        '<span class="tag tag-freq">' + (r.airlines.length > 1 ? "Up to " + (r.airlines.reduce(function(s,a){return s + parseInt(a.freq)},0)) + " flights/wk" : r.airlines[0].freq) + '</span>' +
+        '<span class="tag tag-time">' + r.flightTime + '</span>' +
+        '<button class="collapse-btn" id="collapse-' + r.id + '">▾</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="route-body" id="body-' + r.id + '">' +
+      '<div class="section-div">Non-stop flight schedules</div>' +
+      '<div class="flight-grid">' + flightCards + '</div>' +
+      priceInfo +
+      '<div class="tip-box"><div class="tip-title">💡 Tips for this route</div><div class="tip-text">' + tips + '</div></div>' +
+      '<div class="visa-box">' + r.visa + '</div>' +
+      '<div class="book-links">' + bookBtns + '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function toggleCard(id){
+  var body = document.getElementById("body-" + id);
+  var btn = document.getElementById("collapse-" + id);
+  if(body.style.display === "none"){body.style.display = ""; btn.textContent = "▾";}
+  else{body.style.display = "none"; btn.textContent = "▸";}
+}
+
+async function fetchPrices(){
+  var btn = document.getElementById("fetch-btn");
+  var dot = document.getElementById("sdot");
+  var st = document.getElementById("stext");
+  var dep = document.getElementById("f-depart").value;
+  var cabin = document.getElementById("f-cabin").value || "economy";
+  var stay = document.getElementById("f-stay").value;
+
+  btn.disabled = true;
+  btn.textContent = "⏳ Fetching…";
+  dot.className = "dot loading";
+  st.textContent = "Asking AI to fetch live prices from Google Flights and KAYAK…";
+
+  var depStr = dep ? "departing around " + dep : "any date from today onwards";
+  var stayStr = stay === "any" ? "14 days or more" : stay + " days";
+  var today = new Date().toISOString().split("T")[0];
+
+  var prompt = "Today is " + today + ". Search for the current cheapest round-trip non-stop flight prices from Toronto YYZ to each of these destinations: Hong Kong HKG, Beijing PEK, Shanghai PVG, and Guangzhou CAN. Trip duration: minimum " + stayStr + ". Cabin: " + cabin + ". Departure: " + depStr + ".\n\nSearch Google Flights (google.com/travel/flights) and KAYAK (kayak.ca) for these 4 routes.\n\nReturn ONLY valid JSON (no markdown, no backticks) in this exact format:\n{\n  \"HKG\": {\"low\": \"CA$XXX\", \"typical\": \"CA$XXX\", \"airline\": \"Airline name\", \"dates\": \"date range or note\", \"source\": \"Google Flights or KAYAK\"},\n  \"PEK\": {\"low\": \"CA$XXX\", \"typical\": \"CA$XXX\", \"airline\": \"Airline name\", \"dates\": \"date range or note\", \"source\": \"...\"},\n  \"PVG\": {\"low\": \"CA$XXX\", \"typical\": \"CA$XXX\", \"airline\": \"Airline name\", \"dates\": \"date range or note\", \"source\": \"...\"},\n  \"CAN\": {\"low\": \"CA$XXX\", \"typical\": \"CA$XXX\", \"airline\": \"Airline name\", \"dates\": \"date range or note\", \"source\": \"...\"}\n}\n\nPrices must be round-trip, non-stop only, per adult in " + cabin + " class, in Canadian dollars. Return raw JSON only.";
+
+  try {
+    var res = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        model:"claude-sonnet-4-20250514",
+        max_tokens:2000,
+        tools:[{type:"web_search_20250305",name:"web_search"}],
+        messages:[{role:"user",content:prompt}]
+      })
+    });
+    var data = await res.json();
+    var text = "";
+    if(data.content) data.content.forEach(function(b){if(b.type==="text")text+=b.text});
+    var match = text.match(/\{[\s\S]*\}/);
+    if(!match) throw new Error("No price data found");
+    var prices = JSON.parse(match[0]);
+
+    ["HKG","PEK","PVG","CAN"].forEach(function(dest){
+      if(prices[dest]){
+        var p = prices[dest];
+        livePrices[dest] = '<div class="price-row"><div class="price-label">Lowest found</div><div class="price-val" style="color:#40e080">' + p.low + '</div></div>' +
+          '<div class="price-row"><div class="price-label">Typical</div><div class="price-val">' + p.typical + '</div></div>' +
+          '<div class="price-row"><div class="price-label">Airline</div><div class="price-val">' + p.airline + '</div></div>' +
+          '<div class="price-note">📅 ' + (p.dates||"") + ' · Source: ' + (p.source||"AI search") + ' · Non-stop · Round trip · Per adult · CAD incl. taxes</div>';
+      }
+    });
+
+    dot.className = "dot live";
+    st.textContent = "✓ Live prices loaded for all 4 routes";
+    document.getElementById("sup").textContent = "Updated: " + new Date().toLocaleTimeString();
+    btn.disabled = false;
+    btn.textContent = "🔄 Check Live Prices";
+    renderRoutes();
+
+  } catch(e){
+    dot.className = "dot";
+    dot.style.background = "#e04040";
+    st.textContent = "⚠ Could not fetch live prices. Showing historical data. Error: " + e.message;
+    btn.disabled = false;
+    btn.textContent = "🔄 Retry";
+  }
+}
+
+// Set default depart date to 2 weeks from now
+var d = new Date();
+d.setDate(d.getDate() + 14);
+document.getElementById("f-depart").value = d.toISOString().split("T")[0];
+
+renderRoutes();
+</script>
+</body>
+</html>
