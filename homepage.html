@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Waterloo Family Hub</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f0f2f8;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.hub{max-width:560px;width:100%;text-align:center}
+.logo{font-size:40px;margin-bottom:12px}
+h1{font-size:24px;font-weight:700;color:#1a1a2e;margin-bottom:6px}
+.tagline{font-size:13px;color:#888;margin-bottom:36px;line-height:1.6}
+.cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:28px}
+@media(max-width:500px){.cards{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:16px;border:0.5px solid #e0e0e0;padding:28px 16px 22px;text-decoration:none;color:#1a1a2e;transition:box-shadow .15s,transform .15s;display:flex;flex-direction:column;align-items:center;gap:10px}
+.card:hover{box-shadow:0 6px 20px rgba(0,0,0,.1);transform:translateY(-3px)}
+.card-icon{font-size:38px;line-height:1}
+.card-title{font-size:14px;font-weight:700;color:#1a1a2e;text-align:center}
+.card-desc{font-size:11px;color:#888;text-align:center;line-height:1.5}
+.card-pill{margin-top:4px;font-size:10px;font-weight:600;border-radius:10px;padding:3px 10px}
+.pill-green{background:#e6f4ea;color:#1e7b34}
+.pill-blue{background:#e8f0fe;color:#1a5c96}
+.pill-purple{background:#f0ebff;color:#6030a0}
+.pill-red{background:#fdecea;color:#b71c1c}
+.divider{border:none;border-top:0.5px solid #e0e0e0;margin:0 0 20px}
+.links{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.link-btn{font-size:12px;color:#1a5c96;text-decoration:none;background:#e8f0fe;padding:5px 14px;border-radius:20px}
+.link-btn:hover{background:#d0e4fb}
+.footer{font-size:11px;color:#bbb;line-height:1.8}
+.footer a{color:#1a5c96;text-decoration:none}
+.badge-new{background:#fff3cd;color:#856404;border-radius:6px;padding:1px 6px;font-size:10px;font-weight:600;margin-left:4px}
+</style>
+</head>
+<body>
+<div class="hub">
+
+  <div class="logo">🌟</div>
+  <h1>Waterloo Family Hub</h1>
+  <div class="tagline">
+    Free resources for Waterloo Region families<br>
+    Summer camps · Math competitions · Movies · More coming soon
+  </div>
+
+  <div class="cards">
+
+    <a class="card" href="camps.html">
+      <div class="card-icon">🏕️</div>
+      <div class="card-title">Summer Camps</div>
+      <div class="card-desc">Local, Ontario & Canada-wide camps by age, type & price</div>
+      <span class="card-pill pill-green">32+ camps</span>
+    </a>
+
+    <a class="card" href="math.html">
+      <div class="card-icon">📐</div>
+      <div class="card-title">Math Competitions</div>
+      <div class="card-desc">Primary to high school — contests, pathways & training</div>
+      <span class="card-pill pill-blue">26 contests</span>
+    </a>
+
+    <a class="card" href="movies.html">
+      <div class="card-icon">🎬</div>
+      <div class="card-title">Movies</div>
+      <div class="card-desc">Landmark Cinemas Waterloo — live showtimes & age ratings</div>
+      <span class="card-pill pill-purple">Live data <span class="badge-new">NEW</span></span>
+    </a>
+
+  </div>
+
+  <hr class="divider">
+
+  <div class="links">
+    <a class="link-btn" href="https://www.waterloo.ca" target="_blank">City of Waterloo</a>
+    <a class="link-btn" href="https://www.kitchener.ca" target="_blank">City of Kitchener</a>
+    <a class="link-btn" href="https://cemc.uwaterloo.ca" target="_blank">CEMC / UWaterloo</a>
+    <a class="link-btn" href="https://www.landmarkcinemas.com/showtimes/waterloo" target="_blank">Landmark Cinemas</a>
+  </div>
+
+  <div class="footer">
+    📍 Waterloo Region, Ontario &nbsp;·&nbsp; Updated 2026<br>
+    <a href="https://lilyqin2025-cpu.github.io/camp">lilyqin2025-cpu.github.io/camp</a>
+  </div>
+
+</div>
+</body>
+</html>
