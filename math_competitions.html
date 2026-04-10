@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Math Competitions — Canada</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f4f6fb;color:#1a1a2e;font-size:14px}
+.app{max-width:1100px;margin:0 auto;padding:16px}
+.header{background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:12px;border:0.5px solid #e0e0e0}
+.header-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+h1{font-size:19px;font-weight:600;color:#1a1a2e}
+.sub{font-size:12px;color:#888;margin-top:2px}
+.tabs{display:flex;gap:5px;flex-wrap:wrap}
+.tab{padding:6px 13px;border-radius:20px;border:0.5px solid #ccc;background:#fff;cursor:pointer;font-size:12px;color:#555}
+.tab.active{background:#2c5f8a;color:#fff;border-color:#2c5f8a}
+.scope-bar{display:flex;gap:6px;flex-wrap:wrap}
+.sbtn{padding:5px 12px;border-radius:16px;border:0.5px solid #ccc;background:#fff;cursor:pointer;font-size:12px;color:#555}
+.sbtn.active{background:#eaf0fb;color:#2c5f8a;border-color:#2c5f8a;font-weight:500}
+.filters{background:#fff;border-radius:10px;padding:12px 16px;margin-bottom:10px;border:0.5px solid #e0e0e0;display:flex;flex-direction:column;gap:8px}
+.frow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filters label{font-size:12px;color:#666;font-weight:500}
+.filters select,.filters input[type=text]{border:0.5px solid #ccc;border-radius:6px;padding:5px 8px;font-size:12px;color:#333;background:#fff}
+.filters input[type=text]{flex:1;min-width:200px;padding:6px 10px;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px}
+.card{background:#fff;border-radius:10px;border:0.5px solid #e0e0e0;padding:14px;cursor:pointer;transition:box-shadow .15s}
+.card:hover{box-shadow:0 2px 10px rgba(0,0,0,.09)}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:4px}
+.card-name{font-size:13px;font-weight:600;color:#1a1a2e;line-height:1.35}
+.card-org{font-size:11px;color:#777;margin-bottom:7px}
+.card-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px}
+.tag{border-radius:4px;padding:2px 7px;font-size:11px;font-weight:500}
+.tg{background:#eaf0fb;color:#2c5f8a}
+.tl{background:#f0faf4;color:#1a7a4a}
+.ts{background:#f5f0ff;color:#6030a0}
+.td{background:#fef6ec;color:#8a5c00}
+.tn{background:#fdecea;color:#a02020}
+.tw{background:#e8faf0;color:#0f6e4a}
+.card-info{font-size:11px;color:#555;line-height:1.6}
+.card-date{font-size:11px;color:#888;margin-top:7px;padding-top:7px;border-top:0.5px solid #f0f0f0}
+.badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:11px;font-weight:500}
+.b-nat{background:#fff3cd;color:#856404}
+.b-prov{background:#e8f4ff;color:#1a5c96}
+.b-local{background:#e8faf0;color:#0f6e4a}
+.b-intl{background:#fdecea;color:#a02020}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:14px;padding:22px;max-width:580px;width:100%;max-height:90vh;overflow-y:auto;position:relative}
+.modal-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#666}
+.modal h2{font-size:17px;margin-bottom:3px;padding-right:24px;line-height:1.3}
+.modal-org{color:#666;font-size:12px;margin-bottom:12px}
+.sec{font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 5px}
+.drow{display:flex;margin-bottom:6px;font-size:12px}
+.dlabel{width:110px;color:#999;flex-shrink:0;font-weight:500}
+.dval{color:#333;line-height:1.5}
+.pill-list{display:flex;flex-wrap:wrap;gap:4px}
+.pill{background:#eaf0fb;color:#2c5f8a;border-radius:12px;padding:3px 9px;font-size:11px}
+.pill-green{background:#e8faf0;color:#0f6e4a}
+.train-box{background:#f8faff;border-radius:8px;padding:10px 12px;border:0.5px solid #d8e4f5;margin-top:6px}
+.train-item{font-size:12px;color:#333;margin-bottom:5px;line-height:1.5}
+.train-item a{color:#2c5f8a;text-decoration:none}
+.train-item a:hover{text-decoration:underline}
+.reminder-btn{background:#2c5f8a;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:12px;cursor:pointer;margin-top:12px;width:100%}
+.reminder-btn:hover{background:#23507a}
+.flow-wrap{background:#fff;border-radius:10px;border:0.5px solid #e0e0e0;padding:16px;margin-bottom:10px}
+.flow-title{font-size:14px;font-weight:600;color:#2c5f8a;margin-bottom:12px}
+.flow-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}
+.flow-box{background:#eaf0fb;border-radius:8px;padding:10px 12px;min-width:160px;border:0.5px solid #c5d8f5;flex-shrink:0}
+.flow-grade{font-size:11px;font-weight:600;color:#2c5f8a;margin-bottom:4px}
+.flow-contest{font-size:12px;font-weight:500;color:#1a1a2e;margin-bottom:2px}
+.flow-org{font-size:10px;color:#888}
+.flow-arrow{display:flex;align-items:center;color:#aaa;font-size:18px;flex-shrink:0}
+.count{font-size:12px;color:#666;margin-bottom:8px}
+.sec-div{font-size:12px;font-weight:600;color:#888;margin:14px 0 6px;padding-bottom:4px;border-bottom:0.5px solid #e8e8e8}
+.empty{text-align:center;padding:36px;color:#888}
+.rem-item{background:#f8faff;border-radius:8px;padding:9px 12px;margin-bottom:6px;border:0.5px solid #d8e4f5;font-size:12px}
+.rem-item-name{font-weight:600;color:#1a1a2e}
+.rem-remove{float:right;background:none;border:none;cursor:pointer;color:#c0392b;font-size:13px}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>📐 Math Competitions — Canada</h1>
+      <div class="sub">Primary · Middle · High School · Waterloo Region, Ontario, Canada & International</div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('comps')">Competitions</button>
+      <button class="tab" onclick="showTab('pathway')">Pathway Guide</button>
+      <button class="tab" onclick="showTab('training')">Training Resources</button>
+      <button class="tab" onclick="showTab('reminders')">My Reminders <span id="rem-count"></span></button>
+    </div>
+  </div>
+  <div class="scope-bar">
+    <button class="sbtn active" onclick="setScope('all',this)">All levels</button>
+    <button class="sbtn" onclick="setScope('local',this)">📍 Waterloo Region</button>
+    <button class="sbtn" onclick="setScope('provincial',this)">🏛️ Ontario</button>
+    <button class="sbtn" onclick="setScope('national',this)">🍁 Canada-wide</button>
+    <button class="sbtn" onclick="setScope('international',this)">🌍 International</button>
+  </div>
+</div>
+
+<div id="tab-comps">
+<div class="filters">
+  <div class="frow">
+    <input type="text" id="f-search" placeholder="🔍  Search: Gauss, Euclid, olympiad, grade 7, multiple choice, November…" oninput="render()">
+    <button onclick="clearAll()" style="font-size:12px;padding:5px 10px;border-radius:6px;border:0.5px solid #ccc;background:#fff;cursor:pointer">Clear</button>
+  </div>
+  <div class="frow">
+    <label>School level</label>
+    <select id="f-level" onchange="render()">
+      <option value="">All levels</option>
+      <option value="primary">Primary (K–6)</option>
+      <option value="middle">Middle (Gr 7–8)</option>
+      <option value="junior">Junior HS (Gr 9–10)</option>
+      <option value="senior">Senior HS (Gr 11–12)</option>
+    </select>
+    <label>Format</label>
+    <select id="f-format" onchange="render()">
+      <option value="">All formats</option>
+      <option value="online">Online</option>
+      <option value="inperson">In-person (at school)</option>
+      <option value="both">Online or in-person</option>
+    </select>
+    <label>Organizer</label>
+    <select id="f-org" onchange="render()">
+      <option value="">All organizers</option>
+      <option value="CEMC">CEMC (UWaterloo)</option>
+      <option value="CMS">CMS (Canadian Math Society)</option>
+      <option value="AMC">AMC (USA)</option>
+      <option value="Other">Other</option>
+    </select>
+    <label>Month</label>
+    <select id="f-month" onchange="render()">
+      <option value="">Any time</option>
+      <option value="Sep">September</option>
+      <option value="Oct">October</option>
+      <option value="Nov">November</option>
+      <option value="Feb">February</option>
+      <option value="Mar">March</option>
+      <option value="Apr">April</option>
+      <option value="May">May</option>
+    </select>
+  </div>
+</div>
+<div class="count" id="comp-count"></div>
+<div id="comp-grid"></div>
+</div>
+
+<div id="tab-pathway" style="display:none">
+<div style="font-size:13px;color:#555;margin-bottom:10px">The standard Canadian math competition progression from primary school to the International Mathematical Olympiad.</div>
+<div class="flow-wrap">
+  <div class="flow-title">📍 Waterloo Region / Ontario pathway</div>
+  <div class="flow-row" id="pathway-local"></div>
+</div>
+<div class="flow-wrap">
+  <div class="flow-title">🍁 National competition pathway (CEMC → CMS → IMO)</div>
+  <div class="flow-row" id="pathway-national"></div>
+</div>
+<div style="background:#fff8e8;border:0.5px solid #f0d080;border-radius:8px;padding:10px 14px;font-size:12px;color:#7a5c00;margin-top:10px">
+  💡 <strong>Tip:</strong> Most competitions are registered through schools. If your school doesn't participate, ask your teacher to register, or find a nearby participating school. CEMC contests are written at school; some CMS contests allow independent registration.
+</div>
+</div>
+
+<div id="tab-training" style="display:none">
+<div style="font-size:13px;color:#555;margin-bottom:10px">Free and paid training resources for math competition preparation — online and in Waterloo Region.</div>
+<div id="training-grid"></div>
+</div>
+
+<div id="tab-reminders" style="display:none">
+<div style="font-size:13px;color:#555;margin-bottom:10px">Competitions you've flagged. Add from any competition card.</div>
+<div id="reminder-list"></div>
+</div>
+</div>
+
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+<div class="modal">
+  <button class="modal-close" onclick="closeModalBtn()">✕</button>
+  <div id="modal-body"></div>
+</div>
+</div>
+
+<script>
+const COMPS = [
+// ── CEMC (University of Waterloo) ──────────────────────────
+{id:1,name:"Gauss Contest",abbr:"Gauss",org:"CEMC",orgFull:"Centre for Education in Mathematics and Computing, University of Waterloo",scope:"national",level:["middle"],grades:"Gr 7–8 (younger welcome)",gradeMin:7,gradeMax:8,format:"both",month:"May",typicalDate:"May 2026 (exact date TBA)",regDeadline:"April 2026",fee:"School-set (typically $3–5/student)",location:"Written at school — paper or online via CEMC platform",testType:"25 multiple-choice · 60 min · Score out of 150",languages:"English & French",awards:"Top 25% → Certificate of Distinction · School Champion Medal",link:"https://cemc.uwaterloo.ca/contests/gauss",notes:"Perfect entry point for middle schoolers. Questions test logical thinking, not just curriculum. Schools register via CEMC school account.",tags:["multiple-choice","entry-level","team score"],organizer:"CEMC"},
+{id:2,name:"Pascal Contest",abbr:"Pascal",org:"CEMC",orgFull:"Centre for Education in Mathematics and Computing, University of Waterloo",scope:"national",level:["junior"],grades:"Gr 9 (younger welcome)",gradeMin:9,gradeMax:9,format:"both",month:"Feb",typicalDate:"Feb 2026 (completed — 2026/27 dates in May)",regDeadline:"January",fee:"School-set (~$3–5/student)",location:"Written at school — paper or online via CEMC platform",testType:"25 multiple-choice + Part C integer answers · 60 min · Score /150",languages:"English & French",awards:"Top 25% → Certificate of Distinction · School Champion Medal",link:"https://cemc.uwaterloo.ca/contests/pcf",notes:"Part C has 5 questions with integer answer 0–99 — no multiple choice. Logical thinking focus, not memory.",tags:["multiple-choice","Part C","team score"],organizer:"CEMC"},
+{id:3,name:"Cayley Contest",abbr:"Cayley",org:"CEMC",orgFull:"Centre for Education in Mathematics and Computing, University of Waterloo",scope:"national",level:["junior"],grades:"Gr 10 (younger welcome)",gradeMin:10,gradeMax:10,format:"both",month:"Feb",typicalDate:"Feb 2026 (completed — 2026/27 dates in May)",regDeadline:"January",fee:"School-set (~$3–5/student)",location:"Written at school — paper or online",testType:"25 multiple-choice + Part C integer answers · 60 min · Score /150",languages:"English & French",awards:"Top 25% → Certificate of Distinction · School Champion Medal",link:"https://cemc.uwaterloo.ca/contests/pcf",notes:"Grade 10 equivalent of Pascal. Students working ahead may write at a higher level.",tags:["multiple-choice","Part C","team score"],organizer:"CEMC"},
+{id:4,name:"Fermat Contest",abbr:"Fermat",org:"CEMC",orgFull:"Centre for Education in Mathematics and Computing, University of Waterloo",scope:"national",level:["senior"],grades:"Gr 11 (younger welcome)",gradeMin:11,gradeMax:11,format:"both",month:"Feb",typicalDate:"Feb 2026 (completed — 2026/27 dates in May)",regDeadline:"January",fee:"School-set (~$3–5/student)",location:"Written at school — paper or online",testType:"25 multiple-choice + Part C integer answers · 60 min · Score /150",languages:"English & French",awards:"Top 25% → Certificate of Distinction · School Champion Medal",link:"https://cemc.uwaterloo.ca/contests/pcf",notes:"Grade 11 level. Students writing Euclid (Gr 12) should also consider Fermat for practice.",tags:["multiple-choice","Part C"],organizer:"CEMC"},
+{id:5,name:"Euclid Contest",abbr:"Euclid",org:"CEMC",orgFull:"Centre for Education in Mathematics and Computing, University of Waterloo",scope:"national",level:["senior"],grades:"Gr 12 (born on/after Jan 1 2006 for 2026)",gradeMin:12,gradeMax:12,format:"inperson",month:"Apr",typicalDate:"April 2026 (completed — 2026/27 dates in May)",regDeadline:"March",fee:"School-set (~$4–6/student)",location:"Written at school on paper",testType:"10 questions (short answer + full solution) · 2.5 hrs · Score /100",languages:"English & French",awards:"Top 25% → Certificate of Distinction · Honour rolls published · Top prize awards",link:"https://cemc.uwaterloo.ca/contests/euclid",notes:"Most prestigious CEMC contest. Mix of short-answer and full-solution questions. Gateway to university math scholarships. Hardest questions require creative problem-solving.",tags:["full solution","senior","scholarships"],organizer:"CEMC"},
+{id:6,name:"Fryer Contest",abbr:"Fryer",org:"CEMC",orgFull:"Centre for Education in Mathematics and Computing, University of Waterloo",scope:"national",level:["junior"],grades:"Gr 9 or below",gradeMin:7,gradeMax:9,format:"inperson",month:"Apr",typicalDate:"April 1 2026 (completed — 2026/27 dates in May)",regDeadline:"March 5, 2026",fee:"~$15/student",location:"Written at school on paper — mailed to CEMC for marking",testType:"4 full-solution questions · 75 min · Score /40",languages:"English & French",awards:"Top 25% → Certificate of Distinction · School Champion Medal",link:"https://cemc.uwaterloo.ca/contests/fgh",notes:"Full-solution contest — answers must show work. Clear communication is scored. Excellent stepping stone before Galois/Hypatia.",tags:["full solution","written","communication"],organizer:"CEMC"},
+{id:7,name:"Galois Contest",abbr:"Galois",org:"CEMC",orgFull:"Centre for Education in Mathematics and Computing, University of Waterloo",scope:"national",level:["junior"],grades:"Gr 10 or below",gradeMin:7,gradeMax:10,format:"inperson",month:"Apr",typicalDate:"April 1 2026 (completed — 2026/27 dates in May)",regDeadline:"March 5, 2026",fee:"~$15/student",location:"Written at school on paper — mailed to CEMC",testType:"4 full-solution questions · 75 min · Score /40",languages:"English & French",awards:"Top 25% → Certificate of Distinction · School Champion Medal",link:"https://cemc.uwaterloo.ca/contests/fgh",notes:"Progressively challenging full-solution questions. Writing clearly counts for marks.",tags:["full solution","written"],organizer:"CEMC"},
+{id:8,name:"Hypatia Contest",abbr:"Hypatia",org:"CEMC",orgFull:"Centre for Education in Mathematics and Computing, University of Waterloo",scope:"national",level:["senior"],grades:"Gr 11 or below",gradeMin:7,gradeMax:11,format:"inperson",month:"Apr",typicalDate:"April 1 2026 (completed — 2026/27 dates in May)",regDeadline:"March 5, 2026",fee:"~$15/student",location:"Written at school on paper — mailed to CEMC",testType:"4 full-solution questions · 75 min · Score /40",languages:"English & French",awards:"Top 25% → Certificate of Distinction · School Champion Medal",link:"https://cemc.uwaterloo.ca/contests/fgh",notes:"Named after mathematician Hypatia. Full-solution format. Top scorers may qualify for advanced competitions.",tags:["full solution","written"],organizer:"CEMC"},
+{id:9,name:"Canadian Intermediate Mathematics Contest (CIMC)",abbr:"CIMC",org:"CEMC",orgFull:"Centre for Education in Mathematics and Computing, University of Waterloo",scope:"national",level:["junior"],grades:"Gr 9–10",gradeMin:9,gradeMax:10,format:"inperson",month:"Nov",typicalDate:"November 2025 (completed — 2026/27 dates in May)",regDeadline:"October",fee:"School-set",location:"Written at school on paper",testType:"9 questions (6 answer-only + 3 full-solution) · 2 hrs · Score /60",languages:"English & French",awards:"Top 25% → Certificate · Zone/provincial/national honour rolls · Top 5 win $300",link:"https://cemc.uwaterloo.ca/contests/csimc",notes:"More rigorous than Pascal/Cayley. Full-solution answers are scored on clarity and presentation. Top scorer at each school wins a medal.",tags:["full solution","answer-only","honour roll","$300 prize"],organizer:"CEMC"},
+{id:10,name:"Canadian Senior Mathematics Contest (CSMC)",abbr:"CSMC",org:"CEMC",orgFull:"Centre for Education in Mathematics and Computing, University of Waterloo",scope:"national",level:["senior"],grades:"Gr 11–12 and CÉGEP",gradeMin:11,gradeMax:12,format:"inperson",month:"Nov",typicalDate:"November 2025 (completed — 2026/27 dates in May)",regDeadline:"October",fee:"School-set",location:"Written at school on paper",testType:"9 questions (6 answer-only + 3 full-solution) · 2 hrs · Score /60",languages:"English & French",awards:"Top 25% → Certificate · Honour rolls · Top 5 win $500",link:"https://cemc.uwaterloo.ca/contests/csimc",notes:"Strong CSMC score can qualify students for advanced CMS competitions. Top 5 Canadian scorers each receive $500.",tags:["full solution","honour roll","$500 prize","gateway"],organizer:"CEMC"},
+{id:11,name:"Canadian Team Mathematics Contest (CTMC)",abbr:"CTMC",org:"CEMC",orgFull:"Centre for Education in Mathematics and Computing, University of Waterloo",scope:"local",level:["junior","senior"],grades:"Teams of 6 secondary students (any grades)",gradeMin:9,gradeMax:12,format:"both",month:"Apr",typicalDate:"April 9, 2026 (materials released 9am EDT)",regDeadline:"Ongoing — $50/team + $5 fee",fee:"$50/team",location:"At your school OR selected teams write at University of Waterloo",testType:"Individual + team + relay portions · ~3 hours total",languages:"English",awards:"Certificates for all · Top teams invited to UWaterloo event",link:"https://cemc.uwaterloo.ca/contests/ctmc",notes:"Unique collaborative format! Schools host it themselves. Selected teams get to compete in-person at UWaterloo in Waterloo. Great for team-building.",tags:["team","relay","collaborative","UWaterloo event"],organizer:"CEMC"},
+{id:12,name:"Beaver Computing Challenge (BCC)",abbr:"BCC",org:"CEMC",orgFull:"Centre for Education in Mathematics and Computing, University of Waterloo",scope:"national",level:["middle","junior","senior"],grades:"Gr 5–12",gradeMin:5,gradeMax:12,format:"online",month:"Nov",typicalDate:"November 2025 (completed)",regDeadline:"October",fee:"Free",location:"Online — at school or home",testType:"Multiple-choice · 45 min · Introduces computer science concepts",languages:"English & French",awards:"Certificates · Honour mentions",link:"https://cemc.uwaterloo.ca/contests/bcc",notes:"No prior coding experience needed. Introduces computational thinking and CS concepts through puzzles. Great first competition for younger students.",tags:["computing","free","no coding needed","intro"],organizer:"CEMC"},
+// ── CMS (Canadian Mathematical Society) ──────────────────────────
+{id:20,name:"Canada Jay Mathematical Competition (CJMC)",abbr:"CJMC",org:"CMS",orgFull:"Canadian Mathematical Society",scope:"national",level:["primary","middle"],grades:"Gr 5–8 (entry level)",gradeMin:5,gradeMax:8,format:"both",month:"Nov",typicalDate:"November 2025 (completed — 2026 in Nov)",regDeadline:"October",fee:"Free for Black/Indigenous students · Small fee otherwise",location:"At school or approved location — online via CMS platform",testType:"Problem-solving questions · accessible and creative",languages:"English & French",awards:"Certificates · Recognition · Results published Dec",link:"https://cms.math.ca/competitions/cjmc/",notes:"Designed to introduce Gr 5–8 students to math problem-solving and the CMS competition world. Named after the Canada Jay bird. Excellent starting point before CLMC or COMC.",tags:["entry-level","primary","problem-solving","free for some"],organizer:"CMS"},
+{id:21,name:"Canada Lynx Mathematical Competition (CLMC)",abbr:"CLMC",org:"CMS",orgFull:"Canadian Mathematical Society",scope:"national",level:["middle","junior","senior"],grades:"K–12 (designed for Gr 7–12)",gradeMin:7,gradeMax:12,format:"both",month:"Oct",typicalDate:"Early October (Oct 2 2025 — 2026 date TBA Sep)",regDeadline:"September",fee:"Small fee (free for Black/Indigenous students)",location:"At school with proctor OR approved online via Crowdmark",testType:"15 multiple-choice · 90 min · Grades 7–11 curriculum",languages:"English & French",awards:"Prizes · Perfect scorers qualify for COMC free",link:"https://cms.math.ca/competitions/clmc/",notes:"Inclusive entry-level national contest. Immediate feedback after completion. Perfect score → free COMC entry. Great early-year assessment tool for teachers.",tags:["multiple-choice","feedback","gateway to COMC","inclusive"],organizer:"CMS"},
+{id:22,name:"Canadian Open Mathematics Challenge (COMC)",abbr:"COMC",org:"CMS",orgFull:"Canadian Mathematical Society",scope:"national",level:["junior","senior"],grades:"Open to all; designed Gr 9–12",gradeMin:9,gradeMax:12,format:"both",month:"Oct",typicalDate:"October 2025 (completed — 2026 date TBA)",regDeadline:"September",fee:"~$15–20 (independent registration available)",location:"At school with teacher proctor OR independent with approved proctor",testType:"3 sections (A: 4 answer-only; B: 4 short solution; C: 4 full-solution) · 2.5 hrs · Score /80",languages:"English & French",awards:"Top scorers → CMO or CJMO invitation · Top 6–8 females → EGMO pathway",link:"https://cms.math.ca/competitions/comc/",notes:"Primary gateway to CMO/CJMO. Score 67+/80 → CMO invitation. Score 62–66 → Repêchage. Top females invited to EGMO selection. Independent registration allowed — students can register without a school.",tags:["gateway","CMO qualifier","EGMO pathway","independent registration"],organizer:"CMS"},
+{id:23,name:"Canadian Mathematical Olympiad (CMO)",abbr:"CMO",org:"CMS",orgFull:"Canadian Mathematical Society",scope:"national",level:["senior"],grades:"Invitation only — top COMC performers (typically Gr 11–12)",gradeMin:11,gradeMax:12,format:"inperson",month:"Mar",typicalDate:"March 2026 (invitations sent January)",regDeadline:"By invitation only",fee:"Free (invited students)",location:"With licensed teacher proctor — anywhere in Canada",testType:"5 proof-based problems · several hours · Full rigorous proofs required",languages:"English & French",awards:"CMO results determine Team Canada for IMO",link:"https://cms.math.ca/competitions/cmo/",notes:"Canada's most prestigious math competition. Top ~50 COMC students invited. Winners selected for IMO team. Proof-based — requires rigorous written mathematical argument.",tags:["proof-based","invitation only","IMO qualifier","elite"],organizer:"CMS"},
+{id:24,name:"Canadian Junior Mathematical Olympiad (CJMO)",abbr:"CJMO",org:"CMS",orgFull:"Canadian Mathematical Society",scope:"national",level:["junior"],grades:"Invitation only — top COMC performers Gr 10 or below",gradeMin:7,gradeMax:10,format:"inperson",month:"Mar",typicalDate:"March 2026 (invitations sent late February)",regDeadline:"By invitation only",fee:"Free (invited students)",location:"With licensed teacher proctor",testType:"Proof-based problems · Full solutions required",languages:"English & French",awards:"Recognition · Preparation pathway to future CMO",link:"https://cms.math.ca/competitions/cmo/",notes:"Junior version of CMO for Gr 10 and below. Repêchage writers in Gr 10 or below are invited. Excellent early pathway indicator for future IMO competitors.",tags:["proof-based","invitation only","junior olympiad"],organizer:"CMS"},
+// ── AMC (American — open to Canadians) ──────────────────────────
+{id:30,name:"AMC 8",abbr:"AMC 8",org:"AMC",orgFull:"Mathematical Association of America (USA) — open to Canadian students",scope:"international",level:["primary","middle"],grades:"Gr 8 or below (age ≤14.5)",gradeMin:3,gradeMax:8,format:"both",month:"Nov",typicalDate:"November 2025 (completed — 2026 registration opens Sep)",regDeadline:"October",fee:"~$10–15 USD per student",location:"At school or registered competition site",testType:"25 multiple-choice · 40 min · No calculator",languages:"English",awards:"Honour Roll · Distinguished Honour Roll (top 1%) · AIME qualification pathway begins at AMC 10",link:"https://maa.org/student-programs/amc/",notes:"Excellent US-based competition welcoming Canadian students. No penalty for wrong answers in new format. Perfect for building problem-solving habits in Gr 5–8.",tags:["US-based","open to Canadians","elementary","no calculator"],organizer:"AMC"},
+{id:31,name:"AMC 10",abbr:"AMC 10",org:"AMC",orgFull:"Mathematical Association of America (USA) — open to Canadian students",scope:"international",level:["junior"],grades:"Gr 10 or below (age ≤17.5)",gradeMin:8,gradeMax:10,format:"inperson",month:"Nov",typicalDate:"November 2025 (2026 dates TBA)",regDeadline:"October",fee:"~$15–20 USD",location:"At school or registered site",testType:"30 multiple-choice · 75 min · No calculator",languages:"English",awards:"Top scorers qualify for AIME (American Invitational Mathematics Examination)",link:"https://maa.org/student-programs/amc/",notes:"Top ~2.5% of AMC 10 scorers qualify for AIME. Canadian students regularly qualify. Strong performance opens doors to international-level competitions.",tags:["AIME qualifier","US-based","Gr 10 and below"],organizer:"AMC"},
+{id:32,name:"AMC 12",abbr:"AMC 12",org:"AMC",orgFull:"Mathematical Association of America (USA) — open to Canadian students",scope:"international",level:["senior"],grades:"Gr 12 or below (age ≤19.5)",gradeMin:10,gradeMax:12,format:"inperson",month:"Nov",typicalDate:"November 2025 (2026 dates TBA)",regDeadline:"October",fee:"~$15–20 USD",location:"At school or registered site",testType:"30 multiple-choice · 75 min · No calculator",languages:"English",awards:"Top ~5% qualify for AIME",link:"https://maa.org/student-programs/amc/",notes:"Higher level than AMC 10. Top AMC 12 + AIME performers qualify for USAMO — world-class preparation even for Canadian students.",tags:["AIME qualifier","US-based","senior"],organizer:"AMC"},
+// ── Other ──────────────────────────────────────────────
+{id:40,name:"Beestar National Math Competition",abbr:"Beestar",org:"Other",orgFull:"Beestar (online platform)",scope:"national",level:["primary","middle"],grades:"Elementary & middle school (Gr 1–8)",gradeMin:1,gradeMax:8,format:"online",month:"Mar",typicalDate:"March and October each year",regDeadline:"Rolling",fee:"Free tier available · paid premium features",location:"Online — from home or school",testType:"Online multiple-choice · grade-level curriculum",languages:"English",awards:"Rankings · Certificates",link:"https://beestar.org",notes:"Held twice yearly (March and October). Open to students in Canada and worldwide. Good warm-up for younger students before CEMC or CMS contests.",tags:["online","elementary","twice yearly","free tier"],organizer:"Other"},
+{id:41,name:"International Mathematical Olympiad (IMO)",abbr:"IMO",org:"Other",orgFull:"International Mathematical Union — Canada selected via CMO",scope:"international",level:["senior"],grades:"Invitation only — top CMO performers (typically Gr 11–12)",gradeMin:10,gradeMax:12,format:"inperson",month:"Jul",typicalDate:"July 2026 (location varies each year)",regDeadline:"By invitation (via CMO results)",fee:"Free (national team selection covers costs)",location:"International — different city each year (2025: Sunshine Coast, Australia)",testType:"6 proof problems over 2 days · 4.5 hrs/day",languages:"All major languages",awards:"Gold, Silver, Bronze medals · Honourable Mention",link:"https://www.imo-official.org",notes:"The pinnacle of high school mathematics worldwide. Canada sends 6 students annually selected through CMO → Training Camp → IMO. Extremely rare — decades of competition preparation required.",tags:["elite","proof-based","international","6-member team"],organizer:"Other"},
+{id:42,name:"European Girls' Mathematical Olympiad (EGMO)",abbr:"EGMO",org:"Other",orgFull:"EGMO Foundation — Canada selected via COMC female results",scope:"international",level:["senior"],grades:"Invitation only — top female COMC scorers (Gr 9–12)",gradeMin:9,gradeMax:12,format:"inperson",month:"Apr",typicalDate:"April 2026 (European host city)",regDeadline:"By invitation (via COMC — top 6–8 females)",fee:"Free (Girls Math Team Canada)",location:"International — European host city each year",testType:"6 proof problems over 2 days",languages:"Multiple languages",awards:"Gold, Silver, Bronze medals · Honourable Mention",link:"https://www.egmo.org",notes:"Canada's Girls Math Team won 4 medals at 2025 EGMO. Top 6–8 female COMC scorers are invited to selection test. CMS manages the team and training. A 2026 Girls Math Team Canada was announced Feb 2026.",tags:["girls team","proof-based","international","COMC qualifier"],organizer:"Other"},
+{id:43,name:"Purple Comet! Math Meet",abbr:"Purple Comet",org:"Other",orgFull:"Purple Comet (international team competition)",scope:"international",level:["middle","junior"],grades:"Middle & high school — teams of 2–6",gradeMin:6,gradeMax:10,format:"online",month:"Apr",typicalDate:"April each year",regDeadline:"March",fee:"Free",location:"Online — from school or home",testType:"30 problems · 60 min · Team collaboration",languages:"English",awards:"Team rankings · Certificates",link:"https://purplecomet.org",notes:"Free international team competition since 2003. Encouraging for students who enjoy working together. No individual registration required — just form a team.",tags:["team","free","online","international","middle school"],organizer:"Other"},
+{id:44,name:"CEMC Summer Problem Solving Course (SPSC)",abbr:"SPSC",org:"CEMC",orgFull:"Centre for Education in Mathematics and Computing, University of Waterloo",scope:"local",level:["junior","senior"],grades:"Secondary school students",gradeMin:9,gradeMax:12,format:"online",month:"Jul",typicalDate:"Summer (July–August)",regDeadline:"Spring",fee:"Free",location:"Online (asynchronous)",testType:"Not a contest — intensive problem-solving training",languages:"English",awards:"Completion certificate",link:"https://cemc.uwaterloo.ca/resources/grade-level/grade-11-12",notes:"Free online summer training course run by CEMC/UWaterloo. Intensive asynchronous learning with experienced instructors. Excellent preparation for Euclid, Hypatia, COMC.",tags:["free","training","summer","asynchronous","UWaterloo"],organizer:"CEMC"},
+];
+
+const TRAINING = [
+{name:"CEMC Free Courseware",desc:"Full online math & CS courseware from UWaterloo. Lessons, interactive activities, enrichment challenges, practice with feedback. Covers Gr 7–12.",url:"https://cemc.uwaterloo.ca/resources/courseware",type:"Online · Free",grades:"Gr 7–12",best:"All CEMC contests"},
+{name:"CEMC Problem Set Generator",desc:"Generate randomized problem sets from past Gauss, Pascal, Cayley, Fermat contests. Customize by topic. Perfect for daily practice.",url:"https://cemc.uwaterloo.ca/resources/problem-set-generator",type:"Online · Free",grades:"Gr 7–11",best:"Gauss, Pascal, Cayley, Fermat"},
+{name:"CEMC Past Contests & Solutions",desc:"Full archive of past CEMC contests with solutions and commentary. The single best resource for contest preparation at all CEMC levels.",url:"https://cemc.uwaterloo.ca/resources/past-contests",type:"Online · Free",grades:"Gr 7–12",best:"All CEMC contests"},
+{name:"CEMC Visits Schools",desc:"CEMC experts conduct in-person problem-solving workshops at Waterloo Region schools. Contact CEMC to arrange a visit for your class.",url:"https://cemc.uwaterloo.ca",type:"In-person (Waterloo Region) · Free",grades:"Gr 7–12",best:"Workshop preparation"},
+{name:"CEMC Summer Problem Solving Course",desc:"Free, asynchronous intensive online summer course run by UWaterloo instructors. Covers advanced problem-solving strategies for Euclid and COMC level.",url:"https://cemc.uwaterloo.ca/resources/grade-level/grade-11-12",type:"Online · Free",grades:"Gr 9–12",best:"Euclid, COMC, CSMC"},
+{name:"Art of Problem Solving (AoPS)",desc:"World-leading competition math community. Online courses, textbooks, forums, and Math Jams. Used by IMO competitors worldwide. Particularly strong for AMC/AIME/Olympiad prep.",url:"https://artofproblemsolving.com",type:"Online · Paid courses (free forums)",grades:"Gr 5–12",best:"AMC 8/10/12, AIME, CMO"},
+{name:"CMS Competition Resources",desc:"Official CMS resources for COMC, CLMC, CJMC. Past exams, problem sets, and training materials. Free to access.",url:"https://cms.math.ca/competitions/",type:"Online · Free",grades:"Gr 5–12",best:"CLMC, CJMC, COMC, CMO"},
+{name:"Khan Academy — Competition Math",desc:"Free structured math courses covering pre-algebra through calculus. Good foundation builder. AMC 8 prep course available.",url:"https://www.khanacademy.org/math",type:"Online · Free",grades:"K–12",best:"AMC 8, Gauss, foundational"},
+{name:"Brilliant.org",desc:"Interactive problem-solving platform covering math, logic, science, CS. Strong for building intuition and creative problem-solving used in competitions.",url:"https://brilliant.org",type:"Online · Free (limited) / Paid",grades:"Gr 6–12",best:"General problem-solving, CLMC, COMC"},
+{name:"Olympiad school / private tutors (KW area)",desc:"Several private math enrichment academies near Waterloo offer contest prep courses: e.g., Think Math Academy, local tutors. Search for 'math competition prep Kitchener Waterloo'.",url:"https://www.thinkmathacademy.com",type:"In-person / Online · Paid",grades:"Gr 4–12",best:"All CEMC + AMC contests"},
+{name:"UWaterloo CEMC Euclid Preparation Materials",desc:"Specifically designed prep materials for the Euclid and CSMC. Includes worked examples, strategies, and full practice sets.",url:"https://cemc.uwaterloo.ca/resources/grade-level/grade-11-12",type:"Online · Free",grades:"Gr 11–12",best:"Euclid, CSMC"},
+{name:"CEMC Team Up Challenge",desc:"Collaborative classroom resource for Gr 6–8 — 4 students work together on challenging math problems. Not a competition, but great team-based preparation.",url:"https://cemc.uwaterloo.ca/contests",type:"In-school · Free",grades:"Gr 6–8",best:"Team problem-solving, Gauss prep"},
+];
+
+const SCOPE_CLASS={local:"b-local",provincial:"b-prov",national:"b-nat",international:"b-intl"};
+const SCOPE_LABEL={local:"📍 Local",provincial:"🏛️ Ontario",national:"🍁 National",international:"🌍 International"};
+const LEVEL_LABEL={primary:"Primary K–6",middle:"Middle Gr 7–8",junior:"Junior HS Gr 9–10",senior:"Senior HS Gr 11–12"};
+
+let scope='all';
+let reminders=[];
+try{reminders=JSON.parse(localStorage.getItem('wr_math_rem')||'[]')}catch(e){}
+
+function saveRem(){try{localStorage.setItem('wr_math_rem',JSON.stringify(reminders))}catch(e){}}
+function updateRemCount(){document.getElementById('rem-count').textContent=reminders.length?' ('+reminders.length+')':'';}
+
+function setScope(s,btn){
+  scope=s;
+  document.querySelectorAll('.sbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function showTab(t){
+  ['comps','pathway','training','reminders'].forEach(id=>{
+    document.getElementById('tab-'+id).style.display=id===t?'block':'none';
+  });
+  document.querySelectorAll('.tab').forEach((b,i)=>{
+    b.classList.toggle('active',['comps','pathway','training','reminders'][i]===t);
+  });
+  if(t==='pathway')renderPathway();
+  if(t==='training')renderTraining();
+  if(t==='reminders')renderReminders();
+}
+
+function levelMatch(c,v){
+  if(!v)return true;
+  return c.level.includes(v);
+}
+
+function formatMatch(c,v){
+  if(!v)return true;
+  if(v==='both')return c.format==='both';
+  if(v==='online')return c.format==='online'||c.format==='both';
+  if(v==='inperson')return c.format==='inperson'||c.format==='both';
+  return true;
+}
+
+function kwMatch(c,q){
+  if(!q)return true;
+  const hay=[c.name,c.abbr,c.org,c.orgFull,c.grades,c.month,c.typicalDate,c.testType,c.notes||'',c.tags.join(' ')].join(' ').toLowerCase();
+  return q.toLowerCase().split(/\s+/).filter(Boolean).every(w=>hay.includes(w));
+}
+
+function clearAll(){
+  document.getElementById('f-search').value='';
+  ['f-level','f-format','f-org','f-month'].forEach(id=>document.getElementById(id).value='');
+  render();
+}
+
+function render(){
+  const lv=document.getElementById('f-level').value;
+  const fm=document.getElementById('f-format').value;
+  const og=document.getElementById('f-org').value;
+  const mo=document.getElementById('f-month').value;
+  const q=document.getElementById('f-search').value.trim();
+  const filtered=COMPS.filter(c=>
+    (scope==='all'||c.scope===scope)&&
+    levelMatch(c,lv)&&
+    formatMatch(c,fm)&&
+    (!og||c.org===og)&&
+    (!mo||c.month===mo)&&
+    kwMatch(c,q)
+  );
+  document.getElementById('comp-count').textContent=filtered.length+' competition'+(filtered.length!==1?'s':'')+' found';
+
+  const byScope={local:[],provincial:[],national:[],international:[]};
+  filtered.forEach(c=>byScope[c.scope].push(c));
+  let html='';
+  const order=scope==='all'?['local','provincial','national','international']:['local','provincial','national','international'].filter(s=>s===scope||scope==='all');
+  ['local','provincial','national','international'].forEach(sc=>{
+    const arr=byScope[sc];
+    if(!arr.length)return;
+    const labels={local:'📍 Waterloo Region / Local',provincial:'🏛️ Ontario',national:'🍁 Canada-wide (CEMC / CMS)',international:'🌍 International / USA (open to Canadians)'};
+    html+=`<div class="sec-div">${labels[sc]} (${arr.length})</div><div class="grid">${arr.map(cardHTML).join('')}</div>`;
+  });
+  if(!html)html='<div class="empty">No competitions match your filters.</div>';
+  document.getElementById('comp-grid').innerHTML=html;
+}
+
+function cardHTML(c){
+  const lvTags=c.level.map(l=>`<span class="tag ts">${LEVEL_LABEL[l]}</span>`).join('');
+  const fmtTag=c.format==='online'?'<span class="tag tw">Online</span>':c.format==='inperson'?'<span class="tag td">In-person</span>':'<span class="tag tw">Online or in-person</span>';
+  return`<div class="card" onclick="openModal(${c.id})">
+    <div class="card-top">
+      <div class="card-name">${c.name}</div>
+      <span class="badge ${SCOPE_CLASS[c.scope]}">${SCOPE_LABEL[c.scope]}</span>
+    </div>
+    <div class="card-org">${c.org} · ${c.orgFull.split('—')[0].split(',')[0]}</div>
+    <div class="card-tags">${lvTags}${fmtTag}<span class="tag tg">${c.month}</span></div>
+    <div class="card-info"><strong>Grades:</strong> ${c.grades}<br><strong>Format:</strong> ${c.testType.split('·')[0].trim()}</div>
+    <div class="card-date">📅 ${c.typicalDate}</div>
+  </div>`;
+}
+
+function openModal(id){
+  const c=COMPS.find(x=>x.id===id);
+  const hasRem=reminders.find(r=>r.id===id);
+  const lvTags=c.level.map(l=>`<span class="tag ts">${LEVEL_LABEL[l]}</span>`).join('');
+  const fmtTag=c.format==='online'?'<span class="tag tw">Online</span>':c.format==='inperson'?'<span class="tag td">In-person at school</span>':'<span class="tag tw">Online or in-person</span>';
+  const trainLinks=TRAINING.filter(t=>t.best.toLowerCase().includes(c.abbr.toLowerCase())||t.best.toLowerCase().includes('all'));
+  document.getElementById('modal-body').innerHTML=`
+    <h2>${c.name} (${c.abbr})</h2>
+    <div class="modal-org">${c.orgFull}</div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px">
+      <span class="badge ${SCOPE_CLASS[c.scope]}">${SCOPE_LABEL[c.scope]}</span>
+      ${lvTags}${fmtTag}
+    </div>
+    <div class="sec">Eligibility & dates</div>
+    <div class="drow"><div class="dlabel">Grades</div><div class="dval">${c.grades}</div></div>
+    <div class="drow"><div class="dlabel">Typical date</div><div class="dval">${c.typicalDate}</div></div>
+    <div class="drow"><div class="dlabel">Reg deadline</div><div class="dval">${c.regDeadline}</div></div>
+    <div class="drow"><div class="dlabel">Fee</div><div class="dval">${c.fee}</div></div>
+    <div class="drow"><div class="dlabel">Location</div><div class="dval">${c.location}</div></div>
+    <div class="drow"><div class="dlabel">Languages</div><div class="dval">${c.languages}</div></div>
+    <div class="sec">Contest format</div>
+    <div class="drow"><div class="dlabel">Format</div><div class="dval">${c.testType}</div></div>
+    <div class="sec">Awards & recognition</div>
+    <div style="font-size:12px;color:#333;line-height:1.6">${c.awards}</div>
+    ${c.notes?`<div class="sec">Notes</div><div style="font-size:12px;color:#555;line-height:1.6">${c.notes}</div>`:''}
+    <div class="sec">Key tags</div>
+    <div class="pill-list">${c.tags.map(t=>`<span class="pill">${t}</span>`).join('')}</div>
+    ${trainLinks.length?`<div class="sec">Preparation resources</div><div class="train-box">${trainLinks.slice(0,4).map(t=>`<div class="train-item">→ <a href="${t.url}" target="_blank">${t.name}</a> — ${t.type}</div>`).join('')}</div>`:''}
+    <a href="${c.link}" target="_blank" style="display:inline-block;margin-top:12px;font-size:12px;color:#2c5f8a">Official website ↗</a>
+    <button class="reminder-btn" onclick="toggleReminder(${c.id})" id="rem-btn-${c.id}">
+      ${hasRem?'✓ Reminder set — click to remove':'🔔 Remind me about this competition'}
+    </button>`;
+  document.getElementById('modal').classList.add('open');
+}
+
+function toggleReminder(id){
+  const c=COMPS.find(x=>x.id===id);
+  const idx=reminders.findIndex(r=>r.id===id);
+  if(idx>=0){reminders.splice(idx,1);document.getElementById('rem-btn-'+id).textContent='🔔 Remind me about this competition';}
+  else{reminders.push({id,name:c.name,abbr:c.abbr,typicalDate:c.typicalDate,scope:c.scope});document.getElementById('rem-btn-'+id).textContent='✓ Reminder set — click to remove';}
+  saveRem();updateRemCount();
+}
+function closeModal(e){if(e.target===document.getElementById('modal'))closeModalBtn();}
+function closeModalBtn(){document.getElementById('modal').classList.remove('open');}
+
+const PATHWAY_LOCAL=[
+  {grade:"Gr 5–6",contest:"Canada Jay (CJMC)",org:"CMS",note:"Entry-level problem solving"},
+  {grade:"Gr 7–8",contest:"Gauss + BCC + CLMC",org:"CEMC / CMS",note:"First Waterloo contests"},
+  {grade:"Gr 9",contest:"Pascal + Fryer + CIMC",org:"CEMC",note:"Multiple-choice + full solution"},
+  {grade:"Gr 10",contest:"Cayley + Galois + CIMC",org:"CEMC",note:"Intermediate level"},
+  {grade:"Gr 11",contest:"Fermat + Hypatia + CSMC",org:"CEMC",note:"Senior preparation"},
+  {grade:"Gr 12",contest:"Euclid + CTMC",org:"CEMC",note:"Gateway to scholarships"},
+];
+const PATHWAY_NATIONAL=[
+  {grade:"Oct",contest:"CLMC / COMC",org:"CMS",note:"Entry / gateway"},
+  {grade:"Nov",contest:"CSMC / CIMC",org:"CEMC",note:"Senior / intermediate"},
+  {grade:"Feb",contest:"CMO Repêchage",org:"CMS",note:"By invitation"},
+  {grade:"Mar",contest:"CMO / CJMO",org:"CMS",note:"By invitation — top 50+"},
+  {grade:"Summer",contest:"Math Training Camp",org:"CMS",note:"Team Canada prep"},
+  {grade:"Jul",contest:"IMO / EGMO",org:"International",note:"World stage"},
+];
+
+function renderPathway(){
+  document.getElementById('pathway-local').innerHTML=PATHWAY_LOCAL.map((p,i)=>`
+    ${i>0?'<div class="flow-arrow">→</div>':''}
+    <div class="flow-box">
+      <div class="flow-grade">${p.grade}</div>
+      <div class="flow-contest">${p.contest}</div>
+      <div class="flow-org">${p.org}</div>
+      <div style="font-size:10px;color:#666;margin-top:3px">${p.note}</div>
+    </div>`).join('');
+  document.getElementById('pathway-national').innerHTML=PATHWAY_NATIONAL.map((p,i)=>`
+    ${i>0?'<div class="flow-arrow">→</div>':''}
+    <div class="flow-box" style="background:#f5f0ff;border-color:#d5c5f5">
+      <div class="flow-grade" style="color:#6030a0">${p.grade}</div>
+      <div class="flow-contest">${p.contest}</div>
+      <div class="flow-org">${p.org}</div>
+      <div style="font-size:10px;color:#666;margin-top:3px">${p.note}</div>
+    </div>`).join('');
+}
+
+function renderTraining(){
+  document.getElementById('training-grid').innerHTML=`<div class="grid">${TRAINING.map(t=>`
+    <div class="card" style="cursor:default">
+      <div class="card-name" style="margin-bottom:4px">${t.name}</div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px">
+        <span class="tag tg">${t.type}</span>
+        <span class="tag tl">${t.grades}</span>
+      </div>
+      <div class="card-info">${t.desc}</div>
+      <div class="card-date">Best for: ${t.best}</div>
+      <a href="${t.url}" target="_blank" style="display:inline-block;margin-top:8px;font-size:11px;color:#2c5f8a">Visit resource ↗</a>
+    </div>`).join('')}</div>`;
+}
+
+function renderReminders(){
+  updateRemCount();
+  const list=document.getElementById('reminder-list');
+  if(!reminders.length){list.innerHTML='<div class="empty">No reminders set. Open any competition card and click "Remind me".</div>';return;}
+  list.innerHTML=reminders.map(r=>`
+    <div class="rem-item">
+      <button class="rem-remove" onclick="removeReminder(${r.id})">✕</button>
+      <div class="rem-item-name">${r.name} (${r.abbr})</div>
+      <div style="color:#666;font-size:11px;margin-top:2px"><span class="badge ${SCOPE_CLASS[r.scope]}">${SCOPE_LABEL[r.scope]}</span></div>
+      <div style="color:#2c5f8a;font-size:11px;margin-top:3px">📅 ${r.typicalDate}</div>
+    </div>`).join('');
+}
+
+function removeReminder(id){
+  reminders=reminders.filter(r=>r.id!==id);
+  saveRem();updateRemCount();renderReminders();
+}
+
+updateRemCount();
+render();
+</script>
+</body>
+</html>
