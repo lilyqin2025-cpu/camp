@@ -421,6 +421,58 @@ function removeReminder(id){
 
 updateRemCount();
 render();
+
+async function refreshCamps() {
+  var btn = document.getElementById("refresh-btn");
+  var status = document.getElementById("refresh-status");
+  btn.disabled = true;
+  btn.textContent = "⏳ Searching…";
+  status.style.display = "block";
+  status.style.color = "#f0a020";
+  status.textContent = "AI is searching for new and updated camps in Waterloo Region and Ontario… (15–25 sec)";
+
+  var today = new Date().toISOString().split("T")[0];
+  var prompt = "Today is " + today + ". Search for summer camps 2026 in Waterloo Region Ontario Canada (Kitchener, Waterloo, Cambridge, Wilmot) and any new Ontario-wide or Canada-wide camps open to all Canadian kids. Look for: new camps not previously listed, updated registration dates, price changes, new specialty camps (STEM, sports, arts, nature). Search https://www.regionofwaterloo.ca, https://www.kitchener.ca, https://www.waterloo.ca, https://www.wilmot.ca, https://www.ymcathreerivers.ca, and activeparents.ca.\n\nReturn ONLY a raw JSON array (no markdown, no backticks) of new or updated camps found:\n[\n  {\n    \"name\": \"Camp Name\",\n    \"org\": \"Organization\",\n    \"city\": \"Waterloo/Kitchener/Cambridge/etc\",\n    \"scope\": \"local/provincial/national\",\n    \"type\": \"Multi-activity/Sports/STEM / Tech/Arts/Nature / Outdoor/Aquatics/Overnight/Leadership\",\n    \"campStyle\": \"Day/Overnight/Day/Overnight\",\n    \"ages\": \"5-12\",\n    \"ageMin\": 5,\n    \"ageMax\": 12,\n    \"price\": 300,\n    \"priceLabel\": \"$300/week\",\n    \"status\": \"open/full/soon\",\n    \"regOpen\": \"Registration date description\",\n    \"activities\": [\"Activity 1\", \"Activity 2\"],\n    \"address\": \"Address\",\n    \"link\": \"https://...\",\n    \"notes\": \"Any important notes\"\n  }\n]\n\nReturn raw JSON array only. If no new camps found, return empty array [].";
+
+  try {
+    var res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 4000,
+        tools: [{type: "web_search_20250305", name: "web_search"}],
+        messages: [{role: "user", content: prompt}]
+      })
+    });
+    var data = await res.json();
+    var text = "";
+    if (data.content) data.content.forEach(function(b) { if (b.type === "text") text += b.text; });
+    var match = text.match(/\[[\s\S]*\]/);
+    if (!match) throw new Error("No data returned");
+    var newCamps = JSON.parse(match[0]);
+    if (!newCamps.length) {
+      status.style.color = "#1a7a4a";
+      status.textContent = "✓ No new camps found — all listings are up to date as of " + new Date().toLocaleTimeString();
+    } else {
+      var maxId = Math.max.apply(null, CAMPS.map(function(c){return c.id;}));
+      newCamps.forEach(function(c, i) {
+        c.id = maxId + i + 1;
+        var exists = CAMPS.some(function(ex){ return ex.name.toLowerCase() === c.name.toLowerCase(); });
+        if (!exists) CAMPS.push(c);
+      });
+      status.style.color = "#1a5c96";
+      status.textContent = "✓ Found " + newCamps.length + " new/updated camp(s) — added to list. Last updated: " + new Date().toLocaleTimeString();
+      render();
+    }
+  } catch(err) {
+    status.style.color = "#c0392b";
+    status.textContent = "Could not fetch live data: " + err.message + ". Showing existing data.";
+  }
+
+  btn.disabled = false;
+  btn.textContent = "🔄 Refresh Live Data";
+}
 </script>
 </body>
 </html>
