@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>YYZ Direct Flights to China and Hong Kong</title>
+<title>YYZ Flights to China and Hong Kong</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: system-ui, sans-serif; background: #0a0f1e; color: #e8eaf6; font-size: 14px; min-height: 100vh; }
 .app { max-width: 1000px; margin: 0 auto; padding: 16px; }
-.back { display: inline-block; margin-bottom: 14px; color: #3050a0; font-size: 12px; text-decoration: none; }
-.back:hover { color: #5080c0; }
+a.back { display: inline-block; margin-bottom: 14px; color: #3050a0; font-size: 12px; text-decoration: none; }
 .header { background: #0d1b3e; border-radius: 14px; padding: 18px 22px; margin-bottom: 14px; border: 1px solid #2a3a7e; }
 h1 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
 .sub { font-size: 12px; color: #7080b0; margin-bottom: 12px; }
@@ -18,88 +17,84 @@ h1 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
 .controls { background: #0f1628; border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; border: 1px solid #1e2a4e; }
 .ctrl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 12px; }
 .ctrl-item { display: flex; flex-direction: column; gap: 4px; }
-.ctrl-label { font-size: 11px; color: #5060a0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+.clabel { font-size: 11px; color: #5060a0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
 select, input[type=date], input[type=number] { background: #141c38; border: 1px solid #2a3a6a; border-radius: 6px; padding: 7px 10px; font-size: 13px; color: #c0d0f0; width: 100%; }
-.search-btn { width: 100%; background: #2050d0; color: #fff; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 600; cursor: pointer; }
-.search-btn:hover { background: #3060e0; }
-.note { background: #0f1628; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #4060a0; margin-bottom: 12px; border: 1px solid #1e2a4e; }
-.sec-head { font-size: 11px; font-weight: 600; color: #3a5070; text-transform: uppercase; letter-spacing: 0.5px; margin: 14px 0 8px; padding-bottom: 4px; border-bottom: 1px solid #1a2440; }
-.route-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-bottom: 14px; }
-.route-card { background: #0f1628; border-radius: 12px; border: 1px solid #1e2a4e; overflow: hidden; }
-.rc-head { padding: 12px 14px 10px; border-bottom: 1px solid #1a2440; }
-.rc-route { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
-.rc-code { font-size: 18px; font-weight: 700; color: #80b0ff; }
-.rc-arrow { color: #2a4080; }
-.rc-dest { font-size: 13px; font-weight: 600; color: #c0d0ff; }
-.rc-flag { font-size: 18px; }
-.rc-info { font-size: 11px; color: #5060a0; margin-top: 2px; }
-.rc-body { padding: 10px 14px; }
-.rc-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
-.rc-label { font-size: 11px; color: #5060a0; }
-.rc-val { font-size: 11px; color: #a0b0e0; font-weight: 600; }
-.rc-actions { padding: 0 14px 12px; display: flex; flex-direction: column; gap: 6px; }
-.abtn { display: block; padding: 8px; border-radius: 6px; font-size: 12px; text-decoration: none; text-align: center; font-weight: 600; cursor: pointer; }
-.abtn-gf { background: #1746c8; color: #fff; }
-.abtn-gf:hover { background: #2050d0; }
-.abtn-kk { background: #c03808; color: #fff; }
-.abtn-kk:hover { background: #d04010; }
-.abtn-al { background: #1a3060; color: #7090d0; border: 1px solid #2a4a80; }
-.abtn-al:hover { background: #203870; }
-.detail-box { background: #0f1628; border-radius: 12px; border: 1px solid #1e2a4e; margin-bottom: 10px; overflow: hidden; }
-.det-head { padding: 14px 16px; border-bottom: 1px solid #1a2440; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-.det-head:hover { background: rgba(255,255,255,0.02); }
-.det-title { font-size: 14px; font-weight: 600; color: #c0d0ff; }
-.det-sub { font-size: 11px; color: #4050a0; margin-top: 2px; }
-.det-body { display: none; padding: 14px 16px; }
-.det-body.open { display: block; }
-.sched-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-bottom: 12px; }
-.sched-card { background: #141c38; border-radius: 8px; padding: 10px 12px; border: 1px solid #2a3a6e; }
-.sa-name { font-size: 12px; font-weight: 600; color: #7090e0; margin-bottom: 6px; }
-.sa-flight { display: flex; align-items: center; gap: 4px; margin-bottom: 3px; font-size: 11px; }
-.sa-time { font-size: 14px; font-weight: 700; color: #e0e8ff; }
-.sa-ap { font-size: 10px; color: #4050a0; }
-.sa-mid { font-size: 10px; color: #3a4a60; flex: 1; text-align: center; }
-.sa-freq { font-size: 10px; color: #5060a0; margin-top: 4px; }
-.sa-craft { font-size: 10px; color: #4050a0; margin-top: 2px; }
-.sa-note { font-size: 10px; color: #3a4a60; margin-top: 5px; line-height: 1.5; }
-.tip-box { background: #0d1a2e; border-left: 3px solid #2a5090; border-radius: 4px; padding: 10px 12px; margin-bottom: 10px; font-size: 12px; color: #5070a0; line-height: 1.6; }
-.visa-box { background: #0d1e10; border: 1px solid #1a4020; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #50a060; line-height: 1.6; }
-.toggle { color: #3050a0; font-size: 16px; }
+.sbtn { width: 100%; background: #2050d0; color: #fff; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 8px; }
+.sbtn:hover { background: #3060e0; }
+.obtn { width: 100%; background: #1a3a70; color: #80b0ff; border: 1px solid #2a5aaa; border-radius: 8px; padding: 10px; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; display: block; text-align: center; }
+.obtn:hover { background: #203a80; }
+.note { background: #0f1628; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #4060a0; margin-bottom: 12px; border: 1px solid #1e2a4e; line-height: 1.6; }
+.sec { font-size: 11px; font-weight: 600; color: #3a5070; text-transform: uppercase; letter-spacing: 0.5px; margin: 14px 0 8px; padding-bottom: 4px; border-bottom: 1px solid #1a2440; }
+.rgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.rcard { background: #0f1628; border-radius: 12px; border: 1px solid #1e2a4e; overflow: hidden; }
+.rcard-head { padding: 12px 14px 10px; border-bottom: 1px solid #1a2440; }
+.rcode { font-size: 18px; font-weight: 700; color: #80b0ff; }
+.rdest { font-size: 13px; font-weight: 600; color: #c0d0ff; margin-top: 2px; }
+.rinfo { font-size: 11px; color: #5060a0; margin-top: 2px; }
+.rcard-body { padding: 10px 14px; }
+.prow { display: flex; justify-content: space-between; margin-bottom: 5px; }
+.plabel { font-size: 11px; color: #5060a0; }
+.pval { font-size: 11px; font-weight: 600; }
+.rcard-btns { padding: 0 14px 12px; display: flex; flex-direction: column; gap: 6px; }
+.rbtn { display: block; padding: 8px; border-radius: 6px; font-size: 12px; text-decoration: none; text-align: center; font-weight: 600; }
+.rbtn-gf { background: #1746c8; color: #fff; }
+.rbtn-kk { background: #c03808; color: #fff; }
+.rbtn-al { background: #1a3060; color: #7090d0; border: 1px solid #2a4a80; }
+.dbox { background: #0f1628; border-radius: 12px; border: 1px solid #1e2a4e; margin-bottom: 10px; overflow: hidden; }
+.dhead { padding: 14px 16px; border-bottom: 1px solid #1a2440; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+.dhead:hover { background: rgba(255,255,255,0.02); }
+.dtitle { font-size: 14px; font-weight: 600; color: #c0d0ff; }
+.dsub { font-size: 11px; color: #4050a0; margin-top: 2px; }
+.dbody { display: none; padding: 14px 16px; }
+.dbody.open { display: block; }
+.sgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-bottom: 12px; }
+.scard { background: #141c38; border-radius: 8px; padding: 10px 12px; border: 1px solid #2a3a6e; }
+.sname { font-size: 12px; font-weight: 600; color: #7090e0; margin-bottom: 6px; }
+.sflight { display: flex; align-items: center; gap: 4px; margin-bottom: 3px; }
+.stime { font-size: 14px; font-weight: 700; color: #e0e8ff; }
+.sap { font-size: 10px; color: #4050a0; }
+.smid { font-size: 10px; color: #3a4a60; flex: 1; text-align: center; }
+.sfreq { font-size: 10px; color: #5060a0; margin-top: 4px; }
+.scraft { font-size: 10px; color: #4050a0; margin-top: 2px; }
+.snote { font-size: 10px; color: #3a4a60; margin-top: 5px; line-height: 1.5; }
+.tipbox { background: #0d1a2e; border-left: 3px solid #2a5090; border-radius: 4px; padding: 10px 12px; margin-bottom: 10px; font-size: 12px; color: #5070a0; line-height: 1.6; }
+.visabox { background: #0d1e10; border: 1px solid #1a4020; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #50a060; line-height: 1.6; }
+.tog { color: #3050a0; font-size: 16px; }
 </style>
 </head>
 <body>
 <div class="app">
 
-<a class="back" href="index.html">← Back to Family Hub</a>
+<a class="back" href="index.html">Back to Family Hub</a>
 
 <div class="header">
-  <h1>✈ YYZ → China &amp; Hong Kong — Non-stop Flights</h1>
-  <div class="sub">Direct round-trip from Toronto Pearson · 14+ days · Select dates and search live on Google Flights</div>
+  <h1>YYZ to China and Hong Kong - Non-stop Flights</h1>
+  <div class="sub">Direct round-trip from Toronto Pearson - 14 days or more - Select dates and open Google Flights</div>
   <div class="pills">
-    <div class="pill">🇨🇳 Beijing (PEK) · Air China · Hainan</div>
-    <div class="pill">🇨🇳 Shanghai (PVG) · Air Canada · China Eastern</div>
-    <div class="pill">🇨🇳 Guangzhou (CAN) · China Southern</div>
-    <div class="pill">🇭🇰 Hong Kong (HKG) · Cathay Pacific</div>
+    <span class="pill">Beijing PEK - Air China - Hainan</span>
+    <span class="pill">Shanghai PVG - Air Canada - China Eastern</span>
+    <span class="pill">Guangzhou CAN - China Southern</span>
+    <span class="pill">Hong Kong HKG - Cathay Pacific</span>
   </div>
 </div>
 
 <div class="controls">
   <div class="ctrl-grid">
     <div class="ctrl-item">
-      <div class="ctrl-label">Depart date</div>
-      <input type="date" id="f-dep">
+      <div class="clabel">Depart date</div>
+      <input type="date" id="dep">
     </div>
     <div class="ctrl-item">
-      <div class="ctrl-label">Return date</div>
-      <input type="date" id="f-ret">
+      <div class="clabel">Return date</div>
+      <input type="date" id="ret">
     </div>
     <div class="ctrl-item">
-      <div class="ctrl-label">Adults</div>
-      <input type="number" id="f-adults" value="2" min="1" max="9">
+      <div class="clabel">Adults</div>
+      <input type="number" id="adults" value="2" min="1" max="9">
     </div>
     <div class="ctrl-item">
-      <div class="ctrl-label">Cabin class</div>
-      <select id="f-cabin">
+      <div class="clabel">Cabin</div>
+      <select id="cabin">
         <option value="economy">Economy</option>
         <option value="premium economy">Premium Economy</option>
         <option value="business">Business</option>
@@ -107,287 +102,214 @@ select, input[type=date], input[type=number] { background: #141c38; border: 1px 
       </select>
     </div>
     <div class="ctrl-item">
-      <div class="ctrl-label">Destination</div>
-      <select id="f-dest">
+      <div class="clabel">Destination</div>
+      <select id="dest" onchange="renderAll()">
         <option value="all">All 4 routes</option>
-        <option value="HKG">Hong Kong (HKG)</option>
-        <option value="PEK">Beijing (PEK)</option>
-        <option value="PVG">Shanghai (PVG)</option>
-        <option value="CAN">Guangzhou (CAN)</option>
+        <option value="HKG">Hong Kong HKG</option>
+        <option value="PEK">Beijing PEK</option>
+        <option value="PVG">Shanghai PVG</option>
+        <option value="CAN">Guangzhou CAN</option>
       </select>
     </div>
   </div>
-  <button class="search-btn" onclick="openSearch()">🔍 Search Live Prices on Google Flights ↗</button>
+  <button class="sbtn" onclick="openSearch()">Search Live Prices on Google Flights</button>
+  <a class="obtn" href="#" onclick="openSearch(); return false;">Open Google Flights directly</a>
 </div>
 
 <div class="note">
-  💡 Click Search above to open Google Flights with your dates pre-filled — non-stop filter applied automatically. Use the individual route buttons below to search KAYAK or book directly with each airline.
+  Clicking Search opens Google Flights in a new tab with your dates and non-stop filter pre-filled. Use the buttons on each route card below to search KAYAK or book directly with each airline.
 </div>
 
-<div class="sec-head">Quick search — each route</div>
-<div class="route-grid" id="route-grid"></div>
+<div class="sec">Search each route directly</div>
+<div class="rgrid" id="search-grid"></div>
 
-<div class="sec-head">Typical price ranges (round-trip per person, CAD)</div>
-<div class="route-grid" id="price-grid"></div>
+<div class="sec">Typical price ranges - round trip per person in CAD</div>
+<div class="rgrid" id="price-grid"></div>
 
-<div class="sec-head">Non-stop schedules &amp; route details</div>
+<div class="sec">Non-stop schedules and route details</div>
 <div id="detail-grid"></div>
 
 </div>
-
 <script>
-var ROUTES = [
+var R = [
   {
-    id: "HKG", dest: "Hong Kong", cn: "香港", flag: "🇭🇰",
-    flightTime: "~15h 25m", dist: "12,542 km",
-    ecoLow: "CA$464", ecoMid: "CA$900", busLow: "CA$3,200",
-    cheapMonth: "Jan, Feb, Nov",
-    airlines: [
-      {
-        name: "Cathay Pacific", num: "CX828 / CX826 / CX824",
-        freq: "Daily — up to 3x per day",
-        schedules: [
-          {dep:"00:35", arr:"05:15+1", days:"Daily"},
-          {dep:"10:15", arr:"14:50+1", days:"Daily"},
-          {dep:"15:45", arr:"19:10+1", days:"Daily"}
-        ],
-        aircraft: "Airbus A350-900",
-        classes: "Economy · Premium Economy · Business",
-        terminal: "T3 (YYZ) → T1 (HKG)",
-        note: "Only non-stop option. 18 flights/week outbound. Code-shared with AA, BA, JAL."
-      }
+    id:"HKG", dest:"Hong Kong", cn:"", flag:"HK",
+    ft:"15h 25m", dist:"12,542 km",
+    ecoLow:"CA$464", ecoMid:"CA$900", busLow:"CA$3,200", cheap:"Jan, Feb, Nov",
+    airlines:[
+      {name:"Cathay Pacific", num:"CX828 / CX826 / CX824", freq:"Daily - up to 3x per day",
+       sc:[{d:"00:35",a:"05:15+1",days:"Daily"},{d:"10:15",a:"14:50+1",days:"Daily"},{d:"15:45",a:"19:10+1",days:"Daily"}],
+       ac:"Airbus A350-900", cl:"Economy - Premium Economy - Business", term:"T3 YYZ to T1 HKG",
+       note:"Only non-stop option. 18 flights per week outbound. Code-shared with AA, BA, JAL."}
     ],
-    tips: "Cheapest months: Jan, Feb, Nov. Book 6–8 weeks ahead. Airport Express from HKG to city in 24 min. No visa needed for Canadians.",
-    visa: "🛂 No visa required for Canadians — stays up to 90 days.",
-    airlineUrl: "https://www.cathaypacific.com/cx/en_CA.html",
-    airlineName: "Cathay Pacific"
+    tips:"Cheapest months Jan Feb Nov. Book 6 to 8 weeks ahead. Airport Express from HKG to city in 24 min.",
+    visa:"No visa required for Canadians - stays up to 90 days.",
+    alUrl:"https://www.cathaypacific.com/cx/en_CA.html", alName:"Cathay Pacific"
   },
   {
-    id: "PEK", dest: "Beijing", cn: "北京", flag: "🇨🇳",
-    flightTime: "~14h 00m", dist: "10,554 km",
-    ecoLow: "CA$627", ecoMid: "CA$1,100", busLow: "CA$2,800",
-    cheapMonth: "Nov, Dec, Jan",
-    airlines: [
-      {
-        name: "Air China", num: "CA837 / CA841",
-        freq: "3x per week — Tue, Thu, Sat",
-        schedules: [
-          {dep:"15:10", arr:"18:15+1", days:"Tue · Thu · Sat"},
-          {dep:"16:30", arr:"19:10+1", days:"Tue · Thu · Sat"}
-        ],
-        aircraft: "Boeing 787-9",
-        classes: "Economy · Business · First Class",
-        terminal: "T1/T3 (YYZ) → T3 (PEK)",
-        note: "Star Alliance. Aeroplan points accepted. First Class available."
-      },
-      {
-        name: "Hainan Airlines", num: "HU7966",
-        freq: "1x per week — Sunday only",
-        schedules: [{dep:"17:20", arr:"18:40+1", days:"Sunday only"}],
-        aircraft: "Boeing 787-9",
-        classes: "Economy · Business",
-        terminal: "T1 (YYZ) → T2 (PEK)",
-        note: "Resumed after long hiatus. Only Chinese carrier flying YYZ–PEK direct."
-      }
+    id:"PEK", dest:"Beijing", cn:"", flag:"CN",
+    ft:"14h 00m", dist:"10,554 km",
+    ecoLow:"CA$627", ecoMid:"CA$1,100", busLow:"CA$2,800", cheap:"Nov, Dec, Jan",
+    airlines:[
+      {name:"Air China", num:"CA837 / CA841", freq:"3x per week - Tue Thu Sat",
+       sc:[{d:"15:10",a:"18:15+1",days:"Tue Thu Sat"},{d:"16:30",a:"19:10+1",days:"Tue Thu Sat"}],
+       ac:"Boeing 787-9", cl:"Economy - Business - First Class", term:"T1/T3 YYZ to T3 PEK",
+       note:"Star Alliance. Aeroplan points accepted. First Class available."},
+      {name:"Hainan Airlines", num:"HU7966", freq:"1x per week - Sunday only",
+       sc:[{d:"17:20",a:"18:40+1",days:"Sunday only"}],
+       ac:"Boeing 787-9", cl:"Economy - Business", term:"T1 YYZ to T2 PEK",
+       note:"Resumed after long hiatus. Only Chinese carrier flying YYZ to PEK direct."}
     ],
-    tips: "Cheapest months: Nov, Dec, Jan. Apply for Chinese visa at least 2 weeks ahead. 144h visa-free transit at PEK available.",
-    visa: "🛂 Visa required for Canadians. Apply at Chinese Visa Application Service Centre.",
-    airlineUrl: "https://www.airchina.ca",
-    airlineName: "Air China"
+    tips:"Cheapest months Nov Dec Jan. Apply for Chinese visa at least 2 weeks ahead. 144h visa-free transit at PEK available.",
+    visa:"Visa required for Canadians. Apply at Chinese Visa Application Service Centre.",
+    alUrl:"https://www.airchina.ca", alName:"Air China"
   },
   {
-    id: "PVG", dest: "Shanghai", cn: "上海", flag: "🇨🇳",
-    flightTime: "~14h 30m", dist: "11,800 km",
-    ecoLow: "CA$745", ecoMid: "CA$1,200", busLow: "CA$3,000",
-    cheapMonth: "Nov, Jan",
-    airlines: [
-      {
-        name: "Air Canada", num: "AC031 / AC033",
-        freq: "Up to daily (seasonal)",
-        schedules: [
-          {dep:"01:05", arr:"05:00+1", days:"Seasonal — check dates"},
-          {dep:"01:30", arr:"05:25+1", days:"Seasonal — check dates"}
-        ],
-        aircraft: "Boeing 787-9",
-        classes: "Economy · Premium Economy · Business",
-        terminal: "T1 (YYZ) → T2 (PVG)",
-        note: "Star Alliance. Earn Aeroplan miles. Flat-bed Business class."
-      },
-      {
-        name: "China Eastern", num: "MU581 / MU583",
-        freq: "4x per week — Mon, Wed, Fri, Sun",
-        schedules: [
-          {dep:"23:55", arr:"05:00+1", days:"Mon · Wed · Fri · Sun"},
-          {dep:"00:30", arr:"05:30+1", days:"Mon · Wed · Fri · Sun"}
-        ],
-        aircraft: "Airbus A330-300",
-        classes: "Economy · Business",
-        terminal: "T3 (YYZ) → T1 (PVG)",
-        note: "SkyTeam. Competitive economy fares. Great for domestic China connections."
-      }
+    id:"PVG", dest:"Shanghai", cn:"", flag:"CN",
+    ft:"14h 30m", dist:"11,800 km",
+    ecoLow:"CA$745", ecoMid:"CA$1,200", busLow:"CA$3,000", cheap:"Nov, Jan",
+    airlines:[
+      {name:"Air Canada", num:"AC031 / AC033", freq:"Up to daily seasonal",
+       sc:[{d:"01:05",a:"05:00+1",days:"Seasonal check dates"},{d:"01:30",a:"05:25+1",days:"Seasonal check dates"}],
+       ac:"Boeing 787-9", cl:"Economy - Premium Economy - Business", term:"T1 YYZ to T2 PVG",
+       note:"Star Alliance. Earn Aeroplan miles. Flat-bed Business class."},
+      {name:"China Eastern", num:"MU581 / MU583", freq:"4x per week - Mon Wed Fri Sun",
+       sc:[{d:"23:55",a:"05:00+1",days:"Mon Wed Fri Sun"},{d:"00:30",a:"05:30+1",days:"Mon Wed Fri Sun"}],
+       ac:"Airbus A330-300", cl:"Economy - Business", term:"T3 YYZ to T1 PVG",
+       note:"SkyTeam. Competitive economy fares. Great for domestic China connections."}
     ],
-    tips: "Cheapest months: Nov, Jan. Maglev from PVG to city in 8 min. Book early for summer. Air Canada often cheapest on sale.",
-    visa: "🛂 Visa required for Canadians. Shanghai offers 144-hour visa-free transit.",
-    airlineUrl: "https://www.aircanada.com",
-    airlineName: "Air Canada"
+    tips:"Cheapest months Nov Jan. Maglev from PVG to city in 8 min. Book early for summer.",
+    visa:"Visa required for Canadians. Shanghai offers 144-hour visa-free transit.",
+    alUrl:"https://www.aircanada.com", alName:"Air Canada"
   },
   {
-    id: "CAN", dest: "Guangzhou", cn: "广州", flag: "🇨🇳",
-    flightTime: "~15h 30m", dist: "12,434 km",
-    ecoLow: "CA$1,570", ecoMid: "CA$2,000", busLow: "CA$4,000",
-    cheapMonth: "Jan, Feb",
-    airlines: [
-      {
-        name: "China Southern", num: "CZ328 / CZ330",
-        freq: "4x per week — Mon, Wed, Fri, Sat",
-        schedules: [
-          {dep:"00:30", arr:"05:20+1", days:"Mon · Wed · Fri · Sat"},
-          {dep:"01:30", arr:"05:00+1", days:"Mon · Wed · Fri · Sat"}
-        ],
-        aircraft: "Airbus A330 / Boeing 787",
-        classes: "Economy · Premium Economy · Business",
-        terminal: "T1 (YYZ) → T2 (CAN)",
-        note: "Only non-stop YYZ–CAN option. Best gateway to southern China, Shenzhen, Zhuhai, Macau."
-      }
+    id:"CAN", dest:"Guangzhou", cn:"", flag:"CN",
+    ft:"15h 30m", dist:"12,434 km",
+    ecoLow:"CA$1,570", ecoMid:"CA$2,000", busLow:"CA$4,000", cheap:"Jan, Feb",
+    airlines:[
+      {name:"China Southern", num:"CZ328 / CZ330", freq:"4x per week - Mon Wed Fri Sat",
+       sc:[{d:"00:30",a:"05:20+1",days:"Mon Wed Fri Sat"},{d:"01:30",a:"05:00+1",days:"Mon Wed Fri Sat"}],
+       ac:"Airbus A330 / Boeing 787", cl:"Economy - Premium Economy - Business", term:"T1 YYZ to T2 CAN",
+       note:"Only non-stop YYZ to CAN option. Best gateway to southern China, Shenzhen, Zhuhai, Macau."}
     ],
-    tips: "Best gateway to southern China. High-speed rail CAN to HK West Kowloon ~50 min. Cheapest months: Jan, Feb.",
-    visa: "🛂 Visa required for Canadians. Guangzhou offers 144-hour visa-free transit.",
-    airlineUrl: "https://www.csair.com/ca",
-    airlineName: "China Southern"
+    tips:"Best gateway to southern China. High-speed rail CAN to HK West Kowloon around 50 min. Cheapest months Jan Feb.",
+    visa:"Visa required for Canadians. Guangzhou offers 144-hour visa-free transit.",
+    alUrl:"https://www.csair.com/ca", alName:"China Southern"
   }
 ];
 
-function getDep() { return document.getElementById("f-dep").value || ""; }
-function getRet() { return document.getElementById("f-ret").value || ""; }
-function getAdults() { return document.getElementById("f-adults").value || "2"; }
-function getCabin() { return document.getElementById("f-cabin").value || "economy"; }
-function getDest() { return document.getElementById("f-dest").value || "all"; }
-
-function gfUrl(dest, dep, ret, cabin, adults) {
-  var c = cabin.replace(" ", "+");
-  var d = dep.replace(/-/g, "");
-  var r = ret.replace(/-/g, "");
-  return "https://www.google.com/travel/flights?q=nonstop+flights+from+YYZ+to+" + dest + "+departing+" + dep + "+returning+" + ret + "+" + adults + "+adults+" + c + "&curr=CAD&hl=en";
+function getRoutes() {
+  var d = document.getElementById("dest").value;
+  return d === "all" ? R : R.filter(function(r) { return r.id === d; });
 }
 
-function kayakUrl(dest, dep, ret, cabin, adults) {
-  var cabinMap = {"economy":"e","premium economy":"p","business":"b","first":"f"};
-  var cl = cabinMap[cabin] || "e";
-  return "https://www.kayak.ca/flights/YYZ-" + dest + "/" + (dep||"anytime") + "/" + (ret||"anytime") + "/" + adults + "adults?sort=price_a&fs=stops=0;cabin=" + cl;
+function gfLink(id) {
+  var dep = document.getElementById("dep").value || "";
+  var ret = document.getElementById("ret").value || "";
+  var adults = document.getElementById("adults").value || "2";
+  var cabin = document.getElementById("cabin").value || "economy";
+  return "https://www.google.com/travel/flights?q=nonstop+flights+from+YYZ+to+" + id + "+departing+" + dep + "+returning+" + ret + "+" + adults + "+adults+" + cabin.replace(" ", "+") + "&curr=CAD&hl=en";
+}
+
+function kkLink(id) {
+  var dep = document.getElementById("dep").value || "anytime";
+  var ret = document.getElementById("ret").value || "anytime";
+  var adults = document.getElementById("adults").value || "2";
+  var cabin = document.getElementById("cabin").value || "economy";
+  var cm = {"economy":"e","premium economy":"p","business":"b","first":"f"};
+  return "https://www.kayak.ca/flights/YYZ-" + id + "/" + dep + "/" + ret + "/" + adults + "adults?sort=price_a&fs=stops=0;cabin=" + (cm[cabin]||"e");
 }
 
 function openSearch() {
-  var dep = getDep(); var ret = getRet(); var adults = getAdults();
-  var cabin = getCabin(); var dest = getDest();
-  var d = dest === "all" ? "HKG" : dest;
-  window.open(gfUrl(d, dep, ret, cabin, adults), "_blank");
+  var d = document.getElementById("dest").value;
+  var id = d === "all" ? "HKG" : d;
+  window.open(gfLink(id), "_blank");
 }
 
-function getRoutes() {
-  var dest = getDest();
-  return dest === "all" ? ROUTES : ROUTES.filter(function(r) { return r.id === dest; });
-}
+function renderAll() {
+  var routes = getRoutes();
 
-function renderRouteGrid() {
-  var dep = getDep(); var ret = getRet();
-  var adults = getAdults(); var cabin = getCabin();
-  var html = "";
-  ROUTES.forEach(function(r) {
-    html += '<div class="route-card">' +
-      '<div class="rc-head">' +
-        '<div class="rc-route"><span class="rc-code">YYZ</span><span class="rc-arrow"> → </span><span class="rc-code">' + r.id + '</span><span class="rc-flag">' + r.flag + '</span></div>' +
-        '<div class="rc-dest">' + r.dest + ' ' + r.cn + '</div>' +
-        '<div class="rc-info">' + r.flightTime + ' · ' + r.dist + '</div>' +
-        '<div class="rc-info">' + r.airlines.map(function(a){return a.name;}).join(" · ") + '</div>' +
-      '</div>' +
-      '<div class="rc-actions">' +
-        '<a class="abtn abtn-gf" href="' + gfUrl(r.id, dep, ret, cabin, adults) + '" target="_blank">Google Flights ↗</a>' +
-        '<a class="abtn abtn-kk" href="' + kayakUrl(r.id, dep, ret, cabin, adults) + '" target="_blank">KAYAK ↗</a>' +
-        '<a class="abtn abtn-al" href="' + r.airlineUrl + '" target="_blank">' + r.airlineName + ' ↗</a>' +
-      '</div>' +
-    '</div>';
+  var sg = "";
+  routes.forEach(function(r) {
+    sg += '<div class="rcard"><div class="rcard-head">' +
+      '<div><span class="rcode">YYZ</span> <span style="color:#2a4080">to</span> <span class="rcode">' + r.id + '</span></div>' +
+      '<div class="rdest">' + r.dest + '</div>' +
+      '<div class="rinfo">' + r.ft + ' - ' + r.dist + '</div>' +
+      '<div class="rinfo">' + r.airlines.map(function(a){return a.name;}).join(" / ") + '</div>' +
+      '</div><div class="rcard-btns">' +
+      '<a class="rbtn rbtn-gf" href="' + gfLink(r.id) + '" target="_blank">Google Flights</a>' +
+      '<a class="rbtn rbtn-kk" href="' + kkLink(r.id) + '" target="_blank">KAYAK</a>' +
+      '<a class="rbtn rbtn-al" href="' + r.alUrl + '" target="_blank">' + r.alName + '</a>' +
+      '</div></div>';
   });
-  document.getElementById("route-grid").innerHTML = html;
-}
+  document.getElementById("search-grid").innerHTML = sg;
 
-function renderPriceGrid() {
-  var html = "";
-  ROUTES.forEach(function(r) {
-    html += '<div class="route-card">' +
-      '<div class="rc-head">' +
-        '<div class="rc-route"><span class="rc-code">YYZ</span><span class="rc-arrow"> → </span><span class="rc-code">' + r.id + '</span><span class="rc-flag">' + r.flag + '</span></div>' +
-        '<div class="rc-dest">' + r.dest + ' ' + r.cn + '</div>' +
-      '</div>' +
-      '<div class="rc-body">' +
-        '<div class="rc-row"><div class="rc-label">Economy from</div><div class="rc-val" style="color:#30d070">' + r.ecoLow + '</div></div>' +
-        '<div class="rc-row"><div class="rc-label">Economy typical</div><div class="rc-val">' + r.ecoMid + '</div></div>' +
-        '<div class="rc-row"><div class="rc-label">Business from</div><div class="rc-val" style="color:#a080e0">' + r.busLow + '</div></div>' +
-        '<div class="rc-row"><div class="rc-label">Cheapest months</div><div class="rc-val" style="color:#e0a040">' + r.cheapMonth + '</div></div>' +
-      '</div>' +
-    '</div>';
+  var pg = "";
+  routes.forEach(function(r) {
+    pg += '<div class="rcard"><div class="rcard-head">' +
+      '<div><span class="rcode">YYZ</span> <span style="color:#2a4080">to</span> <span class="rcode">' + r.id + '</span></div>' +
+      '<div class="rdest">' + r.dest + '</div>' +
+      '</div><div class="rcard-body">' +
+      '<div class="prow"><div class="plabel">Economy from</div><div class="pval" style="color:#30d070">' + r.ecoLow + '</div></div>' +
+      '<div class="prow"><div class="plabel">Economy typical</div><div class="pval" style="color:#a0b0e0">' + r.ecoMid + '</div></div>' +
+      '<div class="prow"><div class="plabel">Business from</div><div class="pval" style="color:#a080e0">' + r.busLow + '</div></div>' +
+      '<div class="prow"><div class="plabel">Cheapest months</div><div class="pval" style="color:#e0a040">' + r.cheap + '</div></div>' +
+      '</div></div>';
   });
-  document.getElementById("price-grid").innerHTML = html;
-}
+  document.getElementById("price-grid").innerHTML = pg;
 
-function renderDetails() {
-  var html = "";
-  ROUTES.forEach(function(r) {
-    var scheds = r.airlines.map(function(a) {
-      var flights = a.schedules.map(function(s) {
-        return '<div class="sa-flight"><div class="sa-ap">YYZ</div><div class="sa-time">' + s.dep + '</div><div class="sa-mid">— ' + r.flightTime + ' →</div><div class="sa-time">' + s.arr + '</div><div class="sa-ap">' + r.id + '</div></div>';
+  var dg = "";
+  routes.forEach(function(r) {
+    var sc = r.airlines.map(function(a) {
+      var fl = a.sc.map(function(s) {
+        return '<div class="sflight"><div class="sap">YYZ</div><div class="stime">' + s.d + '</div>' +
+          '<div class="smid">--- ' + r.ft + ' ---</div>' +
+          '<div class="stime">' + s.a + '</div><div class="sap">' + r.id + '</div></div>';
       }).join("");
-      return '<div class="sched-card"><div class="sa-name">' + a.name + ' · ' + a.num + '</div>' + flights +
-        '<div class="sa-freq">🗓 ' + a.freq + '</div>' +
-        '<div class="sa-craft">✈ ' + a.aircraft + '</div>' +
-        '<div class="sa-craft">' + a.classes + '</div>' +
-        '<div class="sa-craft">Terminal: ' + a.terminal + '</div>' +
-        '<div class="sa-note">' + a.note + '</div></div>';
+      return '<div class="scard"><div class="sname">' + a.name + ' - ' + a.num + '</div>' + fl +
+        '<div class="sfreq">' + a.freq + '</div>' +
+        '<div class="scraft">' + a.ac + '</div>' +
+        '<div class="scraft">' + a.cl + '</div>' +
+        '<div class="scraft">Terminal: ' + a.term + '</div>' +
+        '<div class="snote">' + a.note + '</div></div>';
     }).join("");
 
-    html += '<div class="detail-box">' +
-      '<div class="det-head" onclick="toggleDet(\'' + r.id + '\')">' +
+    dg += '<div class="dbox">' +
+      '<div class="dhead" onclick="tog(\'' + r.id + '\')">' +
         '<div>' +
-          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">' +
-            '<span style="font-size:17px;font-weight:700;color:#80b0ff">YYZ → ' + r.id + '</span>' +
-            '<span style="font-size:17px">' + r.flag + '</span>' +
-          '</div>' +
-          '<div class="det-title">' + r.dest + ' ' + r.cn + '</div>' +
-          '<div class="det-sub">' + r.flightTime + ' · ' + r.dist + ' · ' + r.airlines.map(function(a){return a.name;}).join(" + ") + '</div>' +
+          '<div style="font-size:17px;font-weight:700;color:#80b0ff;margin-bottom:3px">YYZ to ' + r.id + '</div>' +
+          '<div class="dtitle">' + r.dest + '</div>' +
+          '<div class="dsub">' + r.ft + ' - ' + r.dist + ' - ' + r.airlines.map(function(a){return a.name;}).join(" + ") + '</div>' +
         '</div>' +
-        '<span class="toggle" id="tog-' + r.id + '">▾</span>' +
+        '<span class="tog" id="tog-' + r.id + '">v</span>' +
       '</div>' +
-      '<div class="det-body" id="det-' + r.id + '">' +
-        '<div class="sec-head">Schedules</div>' +
-        '<div class="sched-grid">' + scheds + '</div>' +
-        '<div class="tip-box">💡 ' + r.tips + '</div>' +
-        '<div class="visa-box">' + r.visa + '</div>' +
+      '<div class="dbody" id="db-' + r.id + '">' +
+        '<div class="sec">Schedules</div>' +
+        '<div class="sgrid">' + sc + '</div>' +
+        '<div class="tipbox">' + r.tips + '</div>' +
+        '<div class="visabox">' + r.visa + '</div>' +
       '</div>' +
     '</div>';
   });
-  document.getElementById("detail-grid").innerHTML = html;
+  document.getElementById("detail-grid").innerHTML = dg;
 }
 
-function toggleDet(id) {
-  var b = document.getElementById("det-" + id);
+function tog(id) {
+  var b = document.getElementById("db-" + id);
   var t = document.getElementById("tog-" + id);
   var open = b.classList.contains("open");
   b.classList.toggle("open", !open);
-  t.textContent = open ? "▾" : "▴";
+  t.textContent = open ? "v" : "^";
 }
 
-function initDates() {
-  var dep = new Date();
-  dep.setDate(dep.getDate() + 60);
-  var ret = new Date(dep);
-  ret.setDate(ret.getDate() + 14);
-  document.getElementById("f-dep").value = dep.toISOString().split("T")[0];
-  document.getElementById("f-ret").value = ret.toISOString().split("T")[0];
-}
+var dep = new Date();
+dep.setDate(dep.getDate() + 60);
+var ret = new Date(dep);
+ret.setDate(ret.getDate() + 14);
+document.getElementById("dep").value = dep.toISOString().split("T")[0];
+document.getElementById("ret").value = ret.toISOString().split("T")[0];
 
-initDates();
-renderRouteGrid();
-renderPriceGrid();
-renderDetails();
+renderAll();
 </script>
 </body>
 </html>
